@@ -2,7 +2,7 @@ rm(list=ls())	# remove all variables in workspace
 
 setwd("D:/Exo")
 
-Sample <- "C1"
+Sample <- "pcMSC_N230"
 
 mainDir <- paste('./Data/',Sample,sep="")
 subDir <- "08_UniProt2ProteinClass"
@@ -90,14 +90,8 @@ round_preserve_sum <- function(x, digits = 0) {
 #############################################################################################################
 
 
-if(Sample == "C1"){
-	batch <- c('20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "C1_8R"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th')
-}else if(Sample == "C1_ALL"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th','20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "E8"){
-	batch <- c('20150828_E8_1','20150828_E8_2','20150828_E8_3')
+if(Sample == "pcMSC_N230"){
+	batch <- c('P3_3rd_181022','P4_4th_181022','P4_5th_181022')
 }else{
 	print(paste('Please provide filename of Sample ',Sample,sep=""))
 }
@@ -689,7 +683,7 @@ for(r in 1:length(batch))
 					
 					# === input GeneID ==============================================================================================================
 					#homologene <- read.csv(paste('./Data/',Sample,'/03_homologene/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_homologene.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
-					homologene <- read.xlsx(paste('./Data/',Sample,'/03_homologene/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_homologene.xlsx',sep=""), sheet='homologene (mouse2human)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
+					homologene <- read.xlsx(paste('./Data/',Sample,'/03_homologene/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_homologene.xlsx',sep=""), sheet='homologene (human2mouse)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
 					
 					homologene.mouse.UniProt <- as.character(homologene$mouse.UniProt)
 					homologene.mouse.GI <- as.character(homologene$mouse.GI)
@@ -2015,28 +2009,32 @@ for(r in 1:length(batch))
 											y.pos.shift_dist = 5
 										} else if(Lv == 1) {
 											y.pos.shift_dist = (0.8+0.95)/2
-											if(Sample=='C1')		y.pos.shift_dist = 0.8
-											if(Sample=='E8')		y.pos.shift_dist = 0.95
-											if(Sample=='C1_8R')		y.pos.shift_dist = 0.85
-											if(Sample=='C1_ALL')	y.pos.shift_dist = 0.85
+											if(Sample=='C1')			y.pos.shift_dist = 0.8
+											if(Sample=='E8')			y.pos.shift_dist = 0.95
+											if(Sample=='C1_8R')			y.pos.shift_dist = 0.85
+											if(Sample=='C1_ALL')		y.pos.shift_dist = 0.85
+											if(Sample=='pcMSC_N230')	y.pos.shift_dist = 0.95
 										} else if(Lv == 2) {
 											y.pos.shift_dist = (1.5+3.0)/2
-											if(Sample=='C1')		y.pos.shift_dist = 3.0
-											if(Sample=='E8')		y.pos.shift_dist = 3.0
-											if(Sample=='C1_8R')		y.pos.shift_dist = 1.5
-											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.5
+											if(Sample=='C1')			y.pos.shift_dist = 3.0
+											if(Sample=='E8')			y.pos.shift_dist = 3.0
+											if(Sample=='C1_8R')			y.pos.shift_dist = 1.5
+											if(Sample=='C1_ALL')		y.pos.shift_dist = 1.5
+											if(Sample=='pcMSC_N230')	y.pos.shift_dist = 3.0
 										} else if(Lv == 3) {
 											y.pos.shift_dist = (1.7+3.8)/2
-											if(Sample=='C1')		y.pos.shift_dist = 3.4
-											if(Sample=='E8')		y.pos.shift_dist = 3.8
-											if(Sample=='C1_8R')		y.pos.shift_dist = 1.7
-											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.7
+											if(Sample=='C1')			y.pos.shift_dist = 3.4
+											if(Sample=='E8')			y.pos.shift_dist = 3.8
+											if(Sample=='C1_8R')			y.pos.shift_dist = 1.7
+											if(Sample=='C1_ALL')		y.pos.shift_dist = 1.7
+											if(Sample=='pcMSC_N230')	y.pos.shift_dist = 3.8
 										} else if(Lv == 4) {
 											y.pos.shift_dist = (1.8+2.6)/2
-											if(Sample=='C1')		y.pos.shift_dist = 2.6
-											if(Sample=='E8')		y.pos.shift_dist = 2.2
-											if(Sample=='C1_8R')		y.pos.shift_dist = 1.8
-											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.8
+											if(Sample=='C1')			y.pos.shift_dist = 2.6
+											if(Sample=='E8')			y.pos.shift_dist = 2.2
+											if(Sample=='C1_8R')			y.pos.shift_dist = 1.8
+											if(Sample=='C1_ALL')		y.pos.shift_dist = 1.8
+											if(Sample=='pcMSC_N230')	y.pos.shift_dist = 2.6
 										}
 										pic <- pic + geom_text(aes(y=(df.new$percent)+y.pos.shift_dist, label=paste(formatC(as.numeric(as.character(round_preserve_sum(df.new$percent,1))),format='f',digits=1),'%',sep='')), size=5, color="black")
 										
