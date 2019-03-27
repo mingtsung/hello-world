@@ -1432,7 +1432,7 @@ for(r in 1:length(batch))
 								for(i in 1:nrow(Protein_Class.level.data))
 								{
 									if(sum(Protein_Class.level.data.species.Protein.number.vector) != 0) {
-										Protein_Class.level.data.species[i,paste(SpeciesName.general[sp],'.Protein.percent',sep="")] = as.numeric(round_preserve_sum((Protein_Class.level.data.species.Protein.number.vector[i]/sum(Protein_Class.level.data.species.Protein.number.vector))*100,1))
+										Protein_Class.level.data.species[i,paste(SpeciesName.general[sp],'.Protein.percent',sep="")] = as.numeric(as.character(round_preserve_sum((Protein_Class.level.data.species.Protein.number.vector[i]/sum(Protein_Class.level.data.species.Protein.number.vector))*100,1)))
 									} else {
 										Protein_Class.level.data.species[i,paste(SpeciesName.general[sp],'.Protein.percent',sep="")] = 0
 									}
@@ -1642,12 +1642,12 @@ for(r in 1:length(batch))
 								
 								
 								# /// ProteinNumSort ///
-								Protein_Class.level.data.species.ProteinNumSort <- Protein_Class.level.data.species[order(as.numeric(Protein_Class.level.data.species[,paste(SpeciesName.general[sp],'.Protein.number',sep="")]), decreasing=TRUE),,drop=FALSE]
+								Protein_Class.level.data.species.ProteinNumSort <- Protein_Class.level.data.species[order(as.numeric(as.character(Protein_Class.level.data.species[,paste(SpeciesName.general[sp],'.Protein.number',sep="")])), decreasing=TRUE),,drop=FALSE]
 								#write.csv(Protein_Class.level.data.species.ProteinNumSort, paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.csv',sep=""), quote=TRUE, row.names=FALSE)
 								
 								if(nrow(Protein_Class.level.data.species.ProteinNumSort) > 0)
 								{
-									if(sum(as.numeric(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.number',sep="")])) != 0)
+									if(sum(as.numeric(as.character(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.number',sep="")]))) != 0)
 									{
 										mainDir <- paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),sep="")
 										subDir <- 'id'
@@ -1912,10 +1912,10 @@ for(r in 1:length(batch))
 								number.cutoff = 5
 								percent.cutoff = 5
 								
-								df = data.frame(group=Protein_Class.level.data.species.ProteinNumSort[,paste('Level.',Lv,sep="")], value=as.numeric(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.number',sep="")]), percent=as.numeric(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.percent',sep="")]))
+								df = data.frame(group=Protein_Class.level.data.species.ProteinNumSort[,paste('Level.',Lv,sep="")], value=as.numeric(as.character(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.number',sep="")])), percent=as.numeric(as.character(Protein_Class.level.data.species.ProteinNumSort[,paste(SpeciesName.general[sp],'.Protein.percent',sep="")])))
 								#df$group = factor(df$group, levels=df$group)
-								df$value = as.numeric(df$value)
-								df$percent = as.numeric(df$percent)
+								df$value = as.numeric(as.character(df$value))
+								df$percent = as.numeric(as.character(df$percent))
 								
 								if(Lv == 0 | Lv == 1) {
 									df.new = df
@@ -1942,162 +1942,165 @@ for(r in 1:length(batch))
 								if(nrow(df.new) != 0)
 								{
 									df.new$group = factor(df.new$group, levels=df.new$group)
-									df.new$value = as.numeric(df.new$value)
-									df.new$percent = as.numeric(df.new$percent)
+									df.new$value = as.numeric(as.character(df.new$value))
+									df.new$percent = as.numeric(as.character(df.new$percent))
 									
-									#pic <- ggplot(df.new, aes(x="", y=percent, fill=group)) + geom_bar(width=1, stat="identity")
-									#pic <- pic + geom_col(position=position_stack(reverse = TRUE), width=1)
-									
-									#if(Lv == 0) {
-									#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/100, stat="identity")
-									#} else if(Lv == 1) {
-									#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/15, stat="identity")
-									#} else if(Lv == 2) {
-									#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/20, stat="identity")
-									#} else if(Lv == 3) {
-									#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/25, stat="identity")
-									#} else if(Lv == 4) {
-									#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/30, stat="identity")
-									#}
-									pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/max(df.new$percent), stat="identity")
-									
-									pic <- pic + coord_flip()
-									pic <- pic + scale_x_discrete(limits=rev(df.new$group))
-									
-									#pic <- pic + scale_fill_grey()
-									pic <- pic + scale_fill_grey(start=0.2, end=0.6)
-									
-									pic <- pic + theme_bw()
-									pic <- pic + theme(panel.grid.major = element_blank())
-									pic <- pic + theme(panel.grid.minor = element_blank())
-									pic <- pic + theme(panel.border = element_blank())
-									
-									pic <- pic + guides(fill=guide_legend(title='protein class'))
-									pic <- pic + theme(legend.title = element_text(color = "black", size = 16))
-									pic <- pic + theme(legend.text = element_text(color = "black", size = 14))
-									pic <- pic + theme(legend.position="none")
-									
-									x.pos <- rep(1.0,length(df.new$percent))
-									#x.pos <- rep(1.0,length(which(df.new$percent >= percent.cutoff)))
-									#if(length(which(df.new$percent < percent.cutoff)) > 0)
-									#{
-									#	x.pos.shift_dist = 0.025
-									#	
-									#	for(k in 1:length(which(df.new$percent < percent.cutoff)))
-									#	{
-									#		x.pos.shift_pos = 1.0 + (x.pos.shift_dist * k)
-									#		
-									#		#if(k%%2 == 0) {
-									#		#	x.pos.shift_pos = 1.0 + (x.pos.shift_dist * 2)
-									#		#} else if(k%%2 == 1) {
-									#		#	x.pos.shift_pos = 1.0 + (x.pos.shift_dist * 1)
-									#		#}
-									#		
-									#		x.pos <- c(x.pos, x.pos.shift_pos)
-									#	}
-									#}
-									#x.pos
-									
-									df.new.breaks <- df.new$percent[1]/2
-									if(nrow(df.new) >= 2) {
-										for(k in 2:nrow(df.new))
-										{
-											df.new.breaks <- c(df.new.breaks, sum(df.new$percent[1:(k-1)]) + df.new$percent[k]/2)
+									if(sum(df.new$percent) != 0)
+									{
+										#pic <- ggplot(df.new, aes(x="", y=percent, fill=group)) + geom_bar(width=1, stat="identity")
+										#pic <- pic + geom_col(position=position_stack(reverse = TRUE), width=1)
+										
+										#if(Lv == 0) {
+										#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/100, stat="identity")
+										#} else if(Lv == 1) {
+										#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/15, stat="identity")
+										#} else if(Lv == 2) {
+										#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/20, stat="identity")
+										#} else if(Lv == 3) {
+										#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/25, stat="identity")
+										#} else if(Lv == 4) {
+										#	pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/30, stat="identity")
+										#}
+										pic <- ggplot(df.new, aes(x=group, y=percent, fill=group)) + geom_bar(width=df.new$percent/max(df.new$percent), stat="identity")
+										
+										pic <- pic + coord_flip()
+										pic <- pic + scale_x_discrete(limits=rev(df.new$group))
+										
+										#pic <- pic + scale_fill_grey()
+										pic <- pic + scale_fill_grey(start=0.2, end=0.6)
+										
+										pic <- pic + theme_bw()
+										pic <- pic + theme(panel.grid.major = element_blank())
+										pic <- pic + theme(panel.grid.minor = element_blank())
+										pic <- pic + theme(panel.border = element_blank())
+										
+										pic <- pic + guides(fill=guide_legend(title='protein class'))
+										pic <- pic + theme(legend.title = element_text(color = "black", size = 16))
+										pic <- pic + theme(legend.text = element_text(color = "black", size = 14))
+										pic <- pic + theme(legend.position="none")
+										
+										x.pos <- rep(1.0,length(df.new$percent))
+										#x.pos <- rep(1.0,length(which(df.new$percent >= percent.cutoff)))
+										#if(length(which(df.new$percent < percent.cutoff)) > 0)
+										#{
+										#	x.pos.shift_dist = 0.025
+										#	
+										#	for(k in 1:length(which(df.new$percent < percent.cutoff)))
+										#	{
+										#		x.pos.shift_pos = 1.0 + (x.pos.shift_dist * k)
+										#		
+										#		#if(k%%2 == 0) {
+										#		#	x.pos.shift_pos = 1.0 + (x.pos.shift_dist * 2)
+										#		#} else if(k%%2 == 1) {
+										#		#	x.pos.shift_pos = 1.0 + (x.pos.shift_dist * 1)
+										#		#}
+										#		
+										#		x.pos <- c(x.pos, x.pos.shift_pos)
+										#	}
+										#}
+										#x.pos
+										
+										df.new.breaks <- df.new$percent[1]/2
+										if(nrow(df.new) >= 2) {
+											for(k in 2:nrow(df.new))
+											{
+												df.new.breaks <- c(df.new.breaks, sum(df.new$percent[1:(k-1)]) + df.new$percent[k]/2)
+											}
 										}
-									}
-									#df.new.breaks
-									
-									#pic <- pic + geom_text(aes(x=x.pos, y=df.new.breaks, label=paste(formatC(as.numeric(round_preserve_sum(df.new$percent,2)),format='f',digits=2),'%',sep='')), size=2.5, color="white")
-									
-									if(Lv == 0 | Lv == 5) {
-										y.pos.shift_dist = 5
-									} else if(Lv == 1) {
-										y.pos.shift_dist = (0.8+0.95)/2
-										if(Sample=='C1')		y.pos.shift_dist = 0.8
-										if(Sample=='E8')		y.pos.shift_dist = 0.95
-										if(Sample=='C1_8R')		y.pos.shift_dist = 0.85
-										if(Sample=='C1_ALL')	y.pos.shift_dist = 0.85
-									} else if(Lv == 2) {
-										y.pos.shift_dist = (1.5+3.0)/2
-										if(Sample=='C1')		y.pos.shift_dist = 3.0
-										if(Sample=='E8')		y.pos.shift_dist = 3.0
-										if(Sample=='C1_8R')		y.pos.shift_dist = 1.5
-										if(Sample=='C1_ALL')	y.pos.shift_dist = 1.5
-									} else if(Lv == 3) {
-										y.pos.shift_dist = (1.7+3.8)/2
-										if(Sample=='C1')		y.pos.shift_dist = 3.4
-										if(Sample=='E8')		y.pos.shift_dist = 3.8
-										if(Sample=='C1_8R')		y.pos.shift_dist = 1.7
-										if(Sample=='C1_ALL')	y.pos.shift_dist = 1.7
-									} else if(Lv == 4) {
-										y.pos.shift_dist = (1.8+2.6)/2
-										if(Sample=='C1')		y.pos.shift_dist = 2.6
-										if(Sample=='E8')		y.pos.shift_dist = 2.2
-										if(Sample=='C1_8R')		y.pos.shift_dist = 1.8
-										if(Sample=='C1_ALL')	y.pos.shift_dist = 1.8
-									}
-									pic <- pic + geom_text(aes(y=(df.new$percent)+y.pos.shift_dist, label=paste(formatC(as.numeric(round_preserve_sum(df.new$percent,1)),format='f',digits=1),'%',sep='')), size=5, color="black")
-									
-									#pic <- pic + scale_y_continuous(breaks=df.new.breaks, labels=df.new$group, position="right")
-									#pic <- pic + scale_y_reverse(breaks=df.new.breaks, labels=df.new$group, position="right")
-									
-									pic <- pic + theme(axis.text.x = element_text(color = "black", size = 14, hjust = 1))
-									pic <- pic + theme(axis.text.y = element_text(color = "black", size = 14, vjust = 0.3))
-									
-									#pic <- pic + coord_polar(theta="y", start=0)
-									
-									pic <- pic + theme(axis.title.x = element_blank())
-									pic <- pic + theme(axis.title.y = element_blank())
-									pic <- pic + theme(axis.text.x = element_blank())
-									#pic <- pic + theme(axis.text.y = element_blank())
-									pic <- pic + theme(axis.ticks.x = element_blank())
-									pic <- pic + theme(axis.ticks.y = element_blank())
-									
-									pic <- pic + theme(panel.background = element_rect(fill="transparent", colour=NA))
-									pic <- pic + theme(plot.background = element_rect(fill="transparent", colour=NA))
-									pic <- pic + theme(legend.background = element_rect(fill="transparent", colour=NA))
-									pic <- pic + theme(legend.box.background = element_rect(fill="transparent", colour=NA))
-									pic <- pic + theme(legend.key = element_rect(fill="transparent", colour=NA))
-									
-									#pic
-									
-									
-									if(nrow(df.new) == 1) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 1 & nrow(df.new) <= 5) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 5 & nrow(df.new) <= 10) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 10 & nrow(df.new) <= 15) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 15 & nrow(df.new) <= 20) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 20 & nrow(df.new) <= 25) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 25 & nrow(df.new) <= 30) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
-									} else if(nrow(df.new) > 30 & nrow(df.new) <= 35) {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
-									} else {
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
-										ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
-										if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
+										#df.new.breaks
+										
+										#pic <- pic + geom_text(aes(x=x.pos, y=df.new.breaks, label=paste(formatC(as.numeric(as.character(round_preserve_sum(df.new$percent,2))),format='f',digits=2),'%',sep='')), size=2.5, color="white")
+										
+										if(Lv == 0 | Lv == 5) {
+											y.pos.shift_dist = 5
+										} else if(Lv == 1) {
+											y.pos.shift_dist = (0.8+0.95)/2
+											if(Sample=='C1')		y.pos.shift_dist = 0.8
+											if(Sample=='E8')		y.pos.shift_dist = 0.95
+											if(Sample=='C1_8R')		y.pos.shift_dist = 0.85
+											if(Sample=='C1_ALL')	y.pos.shift_dist = 0.85
+										} else if(Lv == 2) {
+											y.pos.shift_dist = (1.5+3.0)/2
+											if(Sample=='C1')		y.pos.shift_dist = 3.0
+											if(Sample=='E8')		y.pos.shift_dist = 3.0
+											if(Sample=='C1_8R')		y.pos.shift_dist = 1.5
+											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.5
+										} else if(Lv == 3) {
+											y.pos.shift_dist = (1.7+3.8)/2
+											if(Sample=='C1')		y.pos.shift_dist = 3.4
+											if(Sample=='E8')		y.pos.shift_dist = 3.8
+											if(Sample=='C1_8R')		y.pos.shift_dist = 1.7
+											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.7
+										} else if(Lv == 4) {
+											y.pos.shift_dist = (1.8+2.6)/2
+											if(Sample=='C1')		y.pos.shift_dist = 2.6
+											if(Sample=='E8')		y.pos.shift_dist = 2.2
+											if(Sample=='C1_8R')		y.pos.shift_dist = 1.8
+											if(Sample=='C1_ALL')	y.pos.shift_dist = 1.8
+										}
+										pic <- pic + geom_text(aes(y=(df.new$percent)+y.pos.shift_dist, label=paste(formatC(as.numeric(as.character(round_preserve_sum(df.new$percent,1))),format='f',digits=1),'%',sep='')), size=5, color="black")
+										
+										#pic <- pic + scale_y_continuous(breaks=df.new.breaks, labels=df.new$group, position="right")
+										#pic <- pic + scale_y_reverse(breaks=df.new.breaks, labels=df.new$group, position="right")
+										
+										pic <- pic + theme(axis.text.x = element_text(color = "black", size = 14, hjust = 1))
+										pic <- pic + theme(axis.text.y = element_text(color = "black", size = 14, vjust = 0.3))
+										
+										#pic <- pic + coord_polar(theta="y", start=0)
+										
+										pic <- pic + theme(axis.title.x = element_blank())
+										pic <- pic + theme(axis.title.y = element_blank())
+										pic <- pic + theme(axis.text.x = element_blank())
+										#pic <- pic + theme(axis.text.y = element_blank())
+										pic <- pic + theme(axis.ticks.x = element_blank())
+										pic <- pic + theme(axis.ticks.y = element_blank())
+										
+										pic <- pic + theme(panel.background = element_rect(fill="transparent", colour=NA))
+										pic <- pic + theme(plot.background = element_rect(fill="transparent", colour=NA))
+										pic <- pic + theme(legend.background = element_rect(fill="transparent", colour=NA))
+										pic <- pic + theme(legend.box.background = element_rect(fill="transparent", colour=NA))
+										pic <- pic + theme(legend.key = element_rect(fill="transparent", colour=NA))
+										
+										#pic
+										
+										
+										if(nrow(df.new) == 1) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=3/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 1 & nrow(df.new) <= 5) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=5/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 5 & nrow(df.new) <= 10) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=10/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 10 & nrow(df.new) <= 15) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=15/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 15 & nrow(df.new) <= 20) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=20/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 20 & nrow(df.new) <= 25) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=25/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 25 & nrow(df.new) <= 30) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=30/5, units="in", dpi=600, bg="transparent")
+										} else if(nrow(df.new) > 30 & nrow(df.new) <= 35) {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=35/5, units="in", dpi=600, bg="transparent")
+										} else {
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',paste('Level',Lv,sep=""),'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
+											ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/subset/n_',r,'/',folder[f],'/',SpeciesName.general[sp],'/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
+											if(r == 1 & folder[f] == 'high')	ggsave(paste('./Data/',Sample,'/08_UniProt2ProteinClass/',Sample,'_exo_',SpeciesName.general[sp],'_','ProteinClass_Level',Lv,'_ProteinNumSort.png',sep=""), pic, width=12, height=nrow(df.new)/5, units="in", dpi=600, bg="transparent")
+										}
 									}
 								}
 							}
