@@ -2,7 +2,7 @@ rm(list=ls())	# remove all variables in workspace
 
 setwd("D:/Exo")
 
-Sample <- "C1"
+Sample <- "pcMSC_N230"
 
 mainDir <- paste('./Data/',Sample,sep="")
 subDir <- "10_datasetOverlap"
@@ -40,52 +40,43 @@ library(openxlsx)
 library(VennDiagram)
 
 
-if(Sample == "C1"){
-	batch <- c('20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "C1_8R"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th')
-}else if(Sample == "C1_ALL"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th','20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "E8"){
-	batch <- c('20150828_E8_1','20150828_E8_2','20150828_E8_3')
+if(Sample == "pcMSC_N230"){
+	batch <- c('P3_3rd_181022','P4_4th_181022','P4_5th_181022')
 }else{
 	print(paste('Please provide filename of Sample ',Sample,sep=""))
 }
 
-C1.batch.num = length(c('20150828_C1_1','20150828_C1_2','20150828_C1_3'))
-C1_8R.batch.num = length(c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th'))
-C1_ALL.batch.num = length(c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th','20150828_C1_1','20150828_C1_2','20150828_C1_3'))
-E8.batch.num = length(c('20150828_E8_1','20150828_E8_2','20150828_E8_3'))
+pcMSC_N230.batch.num = length(c('P3_3rd_181022','P4_4th_181022','P4_5th_181022'))
 
 
 # === input Top100 recorded in Microvesicle database ============================================================================
 # --- ExoCarta --------------------------------------------------------------------------------------------------------
 ExoCarta.ProteinNumber_Type <- c('Top100','All')
 
-# /// mouse format ///
-#ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber <- read.csv(paste('./Data/',Sample,'/10_datasetOverlap/Database/mmu/ExoCarta_Top100.Protein_GeneSymbol2MGI.table_IdentificationNumber.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
-ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber <- read.xlsx(paste('./Data/',Sample,'/10_datasetOverlap/Database/mmu/ExoCarta_Top100.Protein_GeneSymbol2MGI.table.xlsx',sep=""), sheet='ExoCarta_Top100 (with number)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
-ExoCarta_Top100.X <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,1])
-ExoCarta_Top100.mgi_symbol <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'mgi_symbol'])
-ExoCarta_Top100.gene_symbol = ExoCarta_Top100.mgi_symbol
-ExoCarta_Top100.Number_of_times_identified <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'Number_of_times_identified'])
-ExoCarta_Top100.mgi_id <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'mgi_id'])
-ExoCarta_Top100.entrezgene <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'entrezgene'])
-ExoCarta_Top100.uniprotswissprot <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'uniprotswissprot'])
-ExoCarta_Top100.description <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'description'])
-ExoCarta_Top100.Protein_names <- as.character(ExoCarta_Top100Protein.GeneSymbol2MGI_table.IdentificationNumber[,'Protein_names'])
+# /// human format ///
+#ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber <- read.csv(paste('./Data/',Sample,'/10_datasetOverlap/Database/hsa/ExoCarta_Top100.Protein_GeneSymbol2HGNC.table_IdentificationNumber.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
+ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber <- read.xlsx(paste('./Data/',Sample,'/10_datasetOverlap/Database/hsa/ExoCarta_Top100.Protein_GeneSymbol2HGNC.table.xlsx',sep=""), sheet='ExoCarta_Top100 (with number)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
+ExoCarta_Top100.X <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,1])
+ExoCarta_Top100.hgnc_symbol <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'hgnc_symbol'])
+ExoCarta_Top100.gene_symbol = ExoCarta_Top100.hgnc_symbol
+ExoCarta_Top100.Number_of_times_identified <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'Number_of_times_identified'])
+ExoCarta_Top100.hgnc_id <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'hgnc_id'])
+ExoCarta_Top100.entrezgene <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'entrezgene'])
+ExoCarta_Top100.uniprotswissprot <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'uniprotswissprot'])
+ExoCarta_Top100.description <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'description'])
+ExoCarta_Top100.Protein_names <- as.character(ExoCarta_Top100Protein.GeneSymbol2HGNC_table.IdentificationNumber[,'Protein_names'])
 #length(ExoCarta_Top100.entrezgene)
 
-#ExoCarta_AllProtein.Gene2MGI_table <- read.csv(paste('./Data/',Sample,'/10_datasetOverlap/Database/mmu/ExoCarta_All.Protein_Gene2MGI.table.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
-ExoCarta_AllProtein.Gene2MGI_table <- read.xlsx(paste('./Data/',Sample,'/10_datasetOverlap/Database/mmu/ExoCarta_All.Protein_Gene2MGI.table.xlsx',sep=""), sheet='ExoCarta_All', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
-ExoCarta_All.X <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,1])
-ExoCarta_All.mgi_symbol <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'mgi_symbol'])
-ExoCarta_All.gene_symbol = ExoCarta_All.mgi_symbol
-ExoCarta_All.mgi_id <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'mgi_id'])
-ExoCarta_All.entrezgene <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'entrezgene'])
-ExoCarta_All.uniprotswissprot <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'uniprotswissprot'])
-ExoCarta_All.description <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'description'])
-ExoCarta_All.Protein_names <- as.character(ExoCarta_AllProtein.Gene2MGI_table[,'Protein_names'])
+#ExoCarta_AllProtein.Gene2HGNC_table <- read.csv(paste('./Data/',Sample,'/10_datasetOverlap/Database/hsa/ExoCarta_All.Protein_Gene2HGNC.table.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
+ExoCarta_AllProtein.Gene2HGNC_table <- read.xlsx(paste('./Data/',Sample,'/10_datasetOverlap/Database/hsa/ExoCarta_All.Protein_Gene2HGNC.table.xlsx',sep=""), sheet='ExoCarta_All', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
+ExoCarta_All.X <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,1])
+ExoCarta_All.hgnc_symbol <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'hgnc_symbol'])
+ExoCarta_All.gene_symbol = ExoCarta_All.hgnc_symbol
+ExoCarta_All.hgnc_id <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'hgnc_id'])
+ExoCarta_All.entrezgene <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'entrezgene'])
+ExoCarta_All.uniprotswissprot <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'uniprotswissprot'])
+ExoCarta_All.description <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'description'])
+ExoCarta_All.Protein_names <- as.character(ExoCarta_AllProtein.Gene2HGNC_table[,'Protein_names'])
 #length(ExoCarta_All.entrezgene)
 
 
@@ -105,22 +96,16 @@ for(r in 1:length(batch))
 		
 		for(f in 1:length(folder))
 		{
-			dataset.Sample1 <- c('C1','C1_8R','C1_ALL')
-			dataset.Sample2 <- c('E8')
-			dataset <- c(dataset.Sample1, dataset.Sample2)
+			#dataset.Sample1 <- c('C1','C1_8R','C1_ALL')
+			#dataset.Sample2 <- c('E8')
+			#dataset <- c(dataset.Sample1, dataset.Sample2)
+			
+			dataset.Sample1 <- c('pcMSC_N230')
+			dataset <- c(dataset.Sample1)
 			
 			for(i in 1:length(dataset))
 			{
 				homologene <- c()
-				homologene.mouse.UniProt <- c()
-				homologene.mouse.GI <- c()
-				homologene.mouse.Gene.ID <- c()
-				homologene.mouse.MGI.ID <- c()
-				homologene.mouse.MGI.Symbol <- c()
-				homologene.mouse.Gene.names <- c()
-				homologene.mouse.Protein.names <- c()
-				homologene.mouse.Frequency <- c()
-				homologene.HID <- c()
 				homologene.human.UniProt <- c()
 				homologene.human.GI <- c()
 				homologene.human.Gene.ID <- c()
@@ -128,19 +113,17 @@ for(r in 1:length(batch))
 				homologene.human.HGNC.Symbol <- c()
 				homologene.human.Gene.names <- c()
 				homologene.human.Protein.names <- c()
+				homologene.human.Frequency <- c()
+				homologene.HID <- c()
+				homologene.mouse.UniProt <- c()
+				homologene.mouse.GI <- c()
+				homologene.mouse.Gene.ID <- c()
+				homologene.mouse.MGI.ID <- c()
+				homologene.mouse.MGI.Symbol <- c()
+				homologene.mouse.Gene.names <- c()
+				homologene.mouse.Protein.names <- c()
 				
 				assign(paste(dataset[i], '.', 'homologene', sep=""), homologene)
-				
-				assign(paste(dataset[i], '.', 'homologene.mouse.UniProt', sep=""), homologene.mouse.UniProt)
-				assign(paste(dataset[i], '.', 'homologene.mouse.GI', sep=""), homologene.mouse.GI)
-				assign(paste(dataset[i], '.', 'homologene.mouse.Gene.ID', sep=""), homologene.mouse.Gene.ID)
-				assign(paste(dataset[i], '.', 'homologene.mouse.MGI.ID', sep=""), homologene.mouse.MGI.ID)
-				assign(paste(dataset[i], '.', 'homologene.mouse.MGI.Symbol', sep=""), homologene.mouse.MGI.Symbol)
-				assign(paste(dataset[i], '.', 'homologene.mouse.Gene.names', sep=""), homologene.mouse.Gene.names)
-				assign(paste(dataset[i], '.', 'homologene.mouse.Protein.names', sep=""), homologene.mouse.Protein.names)
-				assign(paste(dataset[i], '.', 'homologene.mouse.Frequency', sep=""), homologene.mouse.Frequency)
-				
-				assign(paste(dataset[i], '.', 'homologene.HID', sep=""), homologene.HID)
 				
 				assign(paste(dataset[i], '.', 'homologene.human.UniProt', sep=""), homologene.human.UniProt)
 				assign(paste(dataset[i], '.', 'homologene.human.GI', sep=""), homologene.human.GI)
@@ -149,6 +132,17 @@ for(r in 1:length(batch))
 				assign(paste(dataset[i], '.', 'homologene.human.HGNC.Symbol', sep=""), homologene.human.HGNC.Symbol)
 				assign(paste(dataset[i], '.', 'homologene.human.Gene.names', sep=""), homologene.human.Gene.names)
 				assign(paste(dataset[i], '.', 'homologene.human.Protein.names', sep=""), homologene.human.Protein.names)
+				assign(paste(dataset[i], '.', 'homologene.human.Frequency', sep=""), homologene.human.Frequency)
+				
+				assign(paste(dataset[i], '.', 'homologene.HID', sep=""), homologene.HID)
+				
+				assign(paste(dataset[i], '.', 'homologene.mouse.UniProt', sep=""), homologene.mouse.UniProt)
+				assign(paste(dataset[i], '.', 'homologene.mouse.GI', sep=""), homologene.mouse.GI)
+				assign(paste(dataset[i], '.', 'homologene.mouse.Gene.ID', sep=""), homologene.mouse.Gene.ID)
+				assign(paste(dataset[i], '.', 'homologene.mouse.MGI.ID', sep=""), homologene.mouse.MGI.ID)
+				assign(paste(dataset[i], '.', 'homologene.mouse.MGI.Symbol', sep=""), homologene.mouse.MGI.Symbol)
+				assign(paste(dataset[i], '.', 'homologene.mouse.Gene.names', sep=""), homologene.mouse.Gene.names)
+				assign(paste(dataset[i], '.', 'homologene.mouse.Protein.names', sep=""), homologene.mouse.Protein.names)
 				
 				
 				dataset.batch.num = eval(parse(text=paste(dataset[i], '.', 'batch.num', sep="")))
@@ -167,19 +161,7 @@ for(r in 1:length(batch))
 						
 						# === input GeneID ==============================================================================================================
 						#homologene <- read.csv(paste('./Data/',dataset[i],'/03_homologene/subset/n_',new_r,'/',new_folder,'/',dataset[i],'_exo_UniProt_homologene.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
-						homologene <- read.xlsx(paste('./Data/',dataset[i],'/03_homologene/subset/n_',new_r,'/',new_folder,'/',dataset[i],'_exo_UniProt_homologene.xlsx',sep=""), sheet='homologene (mouse2human)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
-						
-						homologene.mouse.UniProt <- as.character(homologene$mouse.UniProt)
-						homologene.mouse.GI <- as.character(homologene$mouse.GI)
-						homologene.mouse.Gene.ID <- as.character(homologene$mouse.Gene.ID)
-						homologene.mouse.MGI.ID <- as.character(homologene$mouse.MGI.ID)
-						homologene.mouse.MGI.Symbol <- as.character(homologene$mouse.MGI.Symbol)
-						homologene.mouse.Gene.names <- as.character(homologene$mouse.Gene.names)
-						homologene.mouse.Protein.names <- as.character(homologene$mouse.Protein.names)
-						homologene.mouse.Frequency <- as.character(homologene$mouse.Frequency)
-						homologene.mouse.Gene.ID[which(is.na(homologene.mouse.Gene.ID))] = ''
-						
-						homologene.HID <- as.character(homologene$HID)
+						homologene <- read.xlsx(paste('./Data/',dataset[i],'/03_homologene/subset/n_',new_r,'/',new_folder,'/',dataset[i],'_exo_UniProt_homologene.xlsx',sep=""), sheet='homologene (human2mouse)', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
 						
 						homologene.human.UniProt <- as.character(homologene$human.UniProt)
 						homologene.human.GI <- as.character(homologene$human.GI)
@@ -188,23 +170,24 @@ for(r in 1:length(batch))
 						homologene.human.HGNC.Symbol <- as.character(homologene$human.HGNC.Symbol)
 						homologene.human.Gene.names <- as.character(homologene$human.Gene.names)
 						homologene.human.Protein.names <- as.character(homologene$human.Protein.names)
+						homologene.human.Frequency <- as.character(homologene$human.Frequency)
 						homologene.human.Gene.ID[which(is.na(homologene.human.Gene.ID))] = ''
 						
-						#length(homologene.mouse.Gene.ID)
+						homologene.HID <- as.character(homologene$HID)
+						
+						homologene.mouse.UniProt <- as.character(homologene$mouse.UniProt)
+						homologene.mouse.GI <- as.character(homologene$mouse.GI)
+						homologene.mouse.Gene.ID <- as.character(homologene$mouse.Gene.ID)
+						homologene.mouse.MGI.ID <- as.character(homologene$mouse.MGI.ID)
+						homologene.mouse.MGI.Symbol <- as.character(homologene$mouse.MGI.Symbol)
+						homologene.mouse.Gene.names <- as.character(homologene$mouse.Gene.names)
+						homologene.mouse.Protein.names <- as.character(homologene$mouse.Protein.names)
+						homologene.mouse.Gene.ID[which(is.na(homologene.mouse.Gene.ID))] = ''
+						
+						#length(homologene.human.Gene.ID)
 						
 						
 						assign(paste(dataset[i], '.', 'homologene', sep=""), homologene)
-						
-						assign(paste(dataset[i], '.', 'homologene.mouse.UniProt', sep=""), homologene.mouse.UniProt)
-						assign(paste(dataset[i], '.', 'homologene.mouse.GI', sep=""), homologene.mouse.GI)
-						assign(paste(dataset[i], '.', 'homologene.mouse.Gene.ID', sep=""), homologene.mouse.Gene.ID)
-						assign(paste(dataset[i], '.', 'homologene.mouse.MGI.ID', sep=""), homologene.mouse.MGI.ID)
-						assign(paste(dataset[i], '.', 'homologene.mouse.MGI.Symbol', sep=""), homologene.mouse.MGI.Symbol)
-						assign(paste(dataset[i], '.', 'homologene.mouse.Gene.names', sep=""), homologene.mouse.Gene.names)
-						assign(paste(dataset[i], '.', 'homologene.mouse.Protein.names', sep=""), homologene.mouse.Protein.names)
-						assign(paste(dataset[i], '.', 'homologene.mouse.Frequency', sep=""), homologene.mouse.Frequency)
-						
-						assign(paste(dataset[i], '.', 'homologene.HID', sep=""), homologene.HID)
 						
 						assign(paste(dataset[i], '.', 'homologene.human.UniProt', sep=""), homologene.human.UniProt)
 						assign(paste(dataset[i], '.', 'homologene.human.GI', sep=""), homologene.human.GI)
@@ -213,6 +196,17 @@ for(r in 1:length(batch))
 						assign(paste(dataset[i], '.', 'homologene.human.HGNC.Symbol', sep=""), homologene.human.HGNC.Symbol)
 						assign(paste(dataset[i], '.', 'homologene.human.Gene.names', sep=""), homologene.human.Gene.names)
 						assign(paste(dataset[i], '.', 'homologene.human.Protein.names', sep=""), homologene.human.Protein.names)
+						assign(paste(dataset[i], '.', 'homologene.human.Frequency', sep=""), homologene.human.Frequency)
+						
+						assign(paste(dataset[i], '.', 'homologene.HID', sep=""), homologene.HID)
+						
+						assign(paste(dataset[i], '.', 'homologene.mouse.UniProt', sep=""), homologene.mouse.UniProt)
+						assign(paste(dataset[i], '.', 'homologene.mouse.GI', sep=""), homologene.mouse.GI)
+						assign(paste(dataset[i], '.', 'homologene.mouse.Gene.ID', sep=""), homologene.mouse.Gene.ID)
+						assign(paste(dataset[i], '.', 'homologene.mouse.MGI.ID', sep=""), homologene.mouse.MGI.ID)
+						assign(paste(dataset[i], '.', 'homologene.mouse.MGI.Symbol', sep=""), homologene.mouse.MGI.Symbol)
+						assign(paste(dataset[i], '.', 'homologene.mouse.Gene.names', sep=""), homologene.mouse.Gene.names)
+						assign(paste(dataset[i], '.', 'homologene.mouse.Protein.names', sep=""), homologene.mouse.Protein.names)
 					}
 				}
 			}
@@ -235,6 +229,10 @@ for(r in 1:length(batch))
 						Sample.CompareMaxNum = 2
 					} else {
 						Sample.CompareMaxNum = 3
+					}
+					
+					if(Sample == 'pcMSC_N230') {
+						Sample.CompareMaxNum = 1
 					}
 					
 					for(n in 1:Sample.CompareMaxNum)		# dataset number
@@ -275,14 +273,14 @@ for(r in 1:length(batch))
 							if(n == 1) {		# n = 1
 								
 								Name1 <- dataset[combn.idx[1,i]]
-								Name1.homologene.mouse.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name1.homologene.mouse.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.mouse.UniProt', sep="")))
-								Name1.homologene.mouse.MGI.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name1.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name1.homologene.mouse.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name1.homologene.mouse.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Protein.names', sep="")))
-								input1 = Name1.homologene.mouse.Gene.ID[which(Name1.homologene.mouse.Gene.ID != '')]
-								input1.idx = which(Name1.homologene.mouse.Gene.ID != '')
+								Name1.homologene.human.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.ID', sep="")))
+								Name1.homologene.human.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.human.UniProt', sep="")))
+								Name1.homologene.human.HGNC.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name1.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name1.homologene.human.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.names', sep="")))
+								Name1.homologene.human.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Protein.names', sep="")))
+								input1 = Name1.homologene.human.Gene.ID[which(Name1.homologene.human.Gene.ID != '')]
+								input1.idx = which(Name1.homologene.human.Gene.ID != '')
 								
 								if(length(input1) == 0) {
 									# Do nothing
@@ -294,7 +292,7 @@ for(r in 1:length(batch))
 										{
 											ExoCarta_Protein.entrezgene = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.entrezgene', sep="")))
 											ExoCarta_Protein.uniprotswissprot = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.uniprotswissprot', sep="")))
-											ExoCarta_Protein.mgi_id = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.mgi_id', sep="")))
+											ExoCarta_Protein.hgnc_id = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.hgnc_id', sep="")))
 											ExoCarta_Protein.gene_symbol = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.gene_symbol', sep="")))
 											ExoCarta_Protein.description = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.description', sep="")))
 											ExoCarta_Protein.Protein_names = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.Protein_names', sep="")))
@@ -327,10 +325,10 @@ for(r in 1:length(batch))
 													write.table(input.overlapType, paste(prename,'_',overlapType[o],'.txt',sep=""), quote=FALSE, row.names=FALSE, col.names=FALSE)
 													
 													# --- csv -----------------------------------------------------------------------------------------
-													input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.mouse.Gene.ID %in% X))
+													input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.human.Gene.ID %in% X))
 													input.overlapType.ExoCarta.idx = sapply(input.overlapType, FUN=function(X) which(ExoCarta_Protein.entrezgene %in% X))
 													uniprot_id.all <- c()
-													mgi_id.all <- c()
+													hgnc_id.all <- c()
 													gene_symbol.all <- c()
 													gene_name.all <- c()
 													protein_name.all <- c()
@@ -340,54 +338,54 @@ for(r in 1:length(batch))
 														ExoCarta.HitNumber = length(unlist(input.overlapType.ExoCarta.idx[j]))
 														
 														if(Sample1.HitNumber == 1) {
-															uniprot_id = Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]
-															mgi_id = Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]
-															gene_symbol = Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]
-															gene_name = Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
-															protein_name = Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
+															uniprot_id = Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]
+															hgnc_id = Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]
+															gene_symbol = Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]
+															gene_name = Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
+															protein_name = Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
 														} else if(Sample1.HitNumber == 0) {
 															if(ExoCarta.HitNumber == 1) {
 																uniprot_id = ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])]
-																mgi_id = ExoCarta_Protein.mgi_id[unlist(input.overlapType.ExoCarta.idx[j])]
+																hgnc_id = ExoCarta_Protein.hgnc_id[unlist(input.overlapType.ExoCarta.idx[j])]
 																gene_symbol = ExoCarta_Protein.gene_symbol[unlist(input.overlapType.ExoCarta.idx[j])]
 																gene_name = ExoCarta_Protein.description[unlist(input.overlapType.ExoCarta.idx[j])]
 																protein_name = ExoCarta_Protein.Protein_names[unlist(input.overlapType.ExoCarta.idx[j])]
 															} else if(ExoCarta.HitNumber == 0) {
 																uniprot_id = ''
-																mgi_id = ''
+																hgnc_id = ''
 																gene_symbol = ''
 																gene_name = ''
 																protein_name = ''
-																cat('[Warning] mouse.Gene.ID:',input.overlapType[j],' does not have any id mapping to \"Name1.homologene.mouse.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.mouse.Gene.ID)\" and ExoCarta_Protein.entrezgene.\n', sep="")
+																cat('[Warning] human.Gene.ID:',input.overlapType[j],' does not have any id mapping to \"Name1.homologene.human.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.human.Gene.ID)\" and ExoCarta_Protein.entrezgene.\n', sep="")
 															} else if(ExoCarta.HitNumber > 1) {
 																uniprot_id = paste(unique(ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
-																mgi_id = paste(unique(ExoCarta_Protein.mgi_id[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
+																hgnc_id = paste(unique(ExoCarta_Protein.hgnc_id[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																gene_symbol = paste(unique(ExoCarta_Protein.gene_symbol[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																gene_name = paste(unique(ExoCarta_Protein.description[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																protein_name = paste(unique(ExoCarta_Protein.Protein_names[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																
 																if(length(unique(ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])])) > 1)
-																cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"ExoCarta_Protein.entrezgene\".\n', sep="")
+																cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"ExoCarta_Protein.entrezgene\".\n', sep="")
 															}
 														} else if(Sample1.HitNumber > 1) {
-															uniprot_id = paste(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															mgi_id = paste(unique(Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															gene_symbol = paste(unique(Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															gene_name = paste(unique(Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															protein_name = paste(unique(Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															uniprot_id = paste(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															hgnc_id = paste(unique(Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															gene_symbol = paste(unique(Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															gene_name = paste(unique(Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															protein_name = paste(unique(Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
 															
-															if(length(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
-															cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.mouse.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+															if(length(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
+															cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.human.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 														}
 														
 														uniprot_id.all = c(uniprot_id.all, uniprot_id)
-														mgi_id.all = c(mgi_id.all, mgi_id)
+														hgnc_id.all = c(hgnc_id.all, hgnc_id)
 														gene_symbol.all = c(gene_symbol.all, gene_symbol)
 														gene_name.all = c(gene_name.all, gene_name)
 														protein_name.all = c(protein_name.all, protein_name)
 													}
-													input.overlapType.info = cbind(input.overlapType, uniprot_id.all, mgi_id.all, gene_symbol.all, gene_name.all, protein_name.all)
-													colnames(input.overlapType.info) = c('mouse.Gene.ID','mouse.UniProt','mouse.MGI.ID','mouse.MGI.Symbol','mouse.Gene.names','mouse.Protein.names')
+													input.overlapType.info = cbind(input.overlapType, uniprot_id.all, hgnc_id.all, gene_symbol.all, gene_name.all, protein_name.all)
+													colnames(input.overlapType.info) = c('human.Gene.ID','human.UniProt','human.HGNC.ID','human.HGNC.Symbol','human.Gene.names','human.Protein.names')
 													#write.table(input.overlapType.info, paste(prename,'_',overlapType[o],'.csv',sep=""), quote=TRUE, na="", sep=",", row.names=FALSE)
 													
 													# --- xlsx ----------------------------------------------------------------------------------------
@@ -449,24 +447,24 @@ for(r in 1:length(batch))
 							} else if(n == 2) {		# n = 2
 								
 								Name1 <- dataset[combn.idx[1,i]]
-								Name1.homologene.mouse.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name1.homologene.mouse.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.mouse.UniProt', sep="")))
-								Name1.homologene.mouse.MGI.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name1.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name1.homologene.mouse.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name1.homologene.mouse.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Protein.names', sep="")))
-								input1 = Name1.homologene.mouse.Gene.ID[which(Name1.homologene.mouse.Gene.ID != '')]
-								input1.idx = which(Name1.homologene.mouse.Gene.ID != '')
+								Name1.homologene.human.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.ID', sep="")))
+								Name1.homologene.human.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.human.UniProt', sep="")))
+								Name1.homologene.human.HGNC.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name1.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name1.homologene.human.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.names', sep="")))
+								Name1.homologene.human.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Protein.names', sep="")))
+								input1 = Name1.homologene.human.Gene.ID[which(Name1.homologene.human.Gene.ID != '')]
+								input1.idx = which(Name1.homologene.human.Gene.ID != '')
 								
 								Name2 <- dataset[combn.idx[2,i]]
-								Name2.homologene.mouse.Gene.ID = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name2.homologene.mouse.UniProt = eval(parse(text=paste(Name2, '.', 'homologene.mouse.UniProt', sep="")))
-								Name2.homologene.mouse.MGI.ID = eval(parse(text=paste(Name2, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name2.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name2, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name2.homologene.mouse.Gene.names = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name2.homologene.mouse.Protein.names = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Protein.names', sep="")))
-								input2 = Name2.homologene.mouse.Gene.ID[which(Name2.homologene.mouse.Gene.ID != '')]
-								input2.idx = which(Name2.homologene.mouse.Gene.ID != '')
+								Name2.homologene.human.Gene.ID = eval(parse(text=paste(Name2, '.', 'homologene.human.Gene.ID', sep="")))
+								Name2.homologene.human.UniProt = eval(parse(text=paste(Name2, '.', 'homologene.human.UniProt', sep="")))
+								Name2.homologene.human.HGNC.ID = eval(parse(text=paste(Name2, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name2.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name2, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name2.homologene.human.Gene.names = eval(parse(text=paste(Name2, '.', 'homologene.human.Gene.names', sep="")))
+								Name2.homologene.human.Protein.names = eval(parse(text=paste(Name2, '.', 'homologene.human.Protein.names', sep="")))
+								input2 = Name2.homologene.human.Gene.ID[which(Name2.homologene.human.Gene.ID != '')]
+								input2.idx = which(Name2.homologene.human.Gene.ID != '')
 								
 								if(length(input1) == 0 & length(input2) == 0) {
 									# Do nothing
@@ -519,10 +517,10 @@ for(r in 1:length(batch))
 												write.table(input.overlapType, paste(prename,'_',overlapType[o],'.txt',sep=""), quote=FALSE, row.names=FALSE, col.names=FALSE)
 												
 												# --- csv -----------------------------------------------------------------------------------------
-												input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.mouse.Gene.ID %in% X))
-												input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.mouse.Gene.ID %in% X))
+												input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.human.Gene.ID %in% X))
+												input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.human.Gene.ID %in% X))
 												uniprot_id.all <- c()
-												mgi_id.all <- c()
+												hgnc_id.all <- c()
 												gene_symbol.all <- c()
 												gene_name.all <- c()
 												protein_name.all <- c()
@@ -532,54 +530,54 @@ for(r in 1:length(batch))
 													Sample2.HitNumber = length(unlist(input.overlapType.Sample2.idx[j]))
 													
 													if(Sample1.HitNumber == 1) {
-														uniprot_id = Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]
-														mgi_id = Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]
-														gene_symbol = Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]
-														gene_name = Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
-														protein_name = Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
+														uniprot_id = Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]
+														hgnc_id = Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]
+														gene_symbol = Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]
+														gene_name = Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
+														protein_name = Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
 													} else if(Sample1.HitNumber == 0) {
 														if(Sample2.HitNumber == 1) {
-															uniprot_id = Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]
-															mgi_id = Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]
-															gene_symbol = Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]
-															gene_name = Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
-															protein_name = Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
+															uniprot_id = Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]
+															hgnc_id = Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]
+															gene_symbol = Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]
+															gene_name = Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
+															protein_name = Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
 														} else if(Sample2.HitNumber == 0) {
 															uniprot_id = ''
-															mgi_id = ''
+															hgnc_id = ''
 															gene_symbol = ''
 															gene_name = ''
 															protein_name = ''
-															cat('[Warning] mouse.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.mouse.Gene.ID.\n', sep="")
+															cat('[Warning] human.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.human.Gene.ID.\n', sep="")
 														} else if(Sample2.HitNumber > 1) {
-															uniprot_id = paste(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															mgi_id = paste(unique(Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															gene_symbol = paste(unique(Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															gene_name = paste(unique(Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															protein_name = paste(unique(Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															uniprot_id = paste(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															hgnc_id = paste(unique(Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															gene_symbol = paste(unique(Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															gene_name = paste(unique(Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															protein_name = paste(unique(Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
 															
-															if(length(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
-															cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.mouse.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+															if(length(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
+															cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.human.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 														}
 													} else if(Sample1.HitNumber > 1) {
-														uniprot_id = paste(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														mgi_id = paste(unique(Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														gene_symbol = paste(unique(Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														gene_name = paste(unique(Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														protein_name = paste(unique(Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														uniprot_id = paste(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														hgnc_id = paste(unique(Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														gene_symbol = paste(unique(Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														gene_name = paste(unique(Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														protein_name = paste(unique(Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
 														
-														if(length(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
-														cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.mouse.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+														if(length(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
+														cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.human.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 													}
 													
 													uniprot_id.all = c(uniprot_id.all, uniprot_id)
-													mgi_id.all = c(mgi_id.all, mgi_id)
+													hgnc_id.all = c(hgnc_id.all, hgnc_id)
 													gene_symbol.all = c(gene_symbol.all, gene_symbol)
 													gene_name.all = c(gene_name.all, gene_name)
 													protein_name.all = c(protein_name.all, protein_name)
 												}
-												input.overlapType.info = cbind(input.overlapType, uniprot_id.all, mgi_id.all, gene_symbol.all, gene_name.all, protein_name.all)
-												colnames(input.overlapType.info) = c('mouse.Gene.ID','mouse.UniProt','mouse.MGI.ID','mouse.MGI.Symbol','mouse.Gene.names','mouse.Protein.names')
+												input.overlapType.info = cbind(input.overlapType, uniprot_id.all, hgnc_id.all, gene_symbol.all, gene_name.all, protein_name.all)
+												colnames(input.overlapType.info) = c('human.Gene.ID','human.UniProt','human.HGNC.ID','human.HGNC.Symbol','human.Gene.names','human.Protein.names')
 												#write.table(input.overlapType.info, paste(prename,'_',overlapType[o],'.csv',sep=""), quote=TRUE, na="", sep=",", row.names=FALSE)
 												
 												# --- xlsx ----------------------------------------------------------------------------------------
@@ -642,7 +640,7 @@ for(r in 1:length(batch))
 										{
 											ExoCarta_Protein.entrezgene = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.entrezgene', sep="")))
 											ExoCarta_Protein.uniprotswissprot = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.uniprotswissprot', sep="")))
-											ExoCarta_Protein.mgi_id = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.mgi_id', sep="")))
+											ExoCarta_Protein.hgnc_id = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.hgnc_id', sep="")))
 											ExoCarta_Protein.gene_symbol = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.gene_symbol', sep="")))
 											ExoCarta_Protein.description = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.description', sep="")))
 											ExoCarta_Protein.Protein_names = eval(parse(text=paste('ExoCarta_', ExoCarta.ProteinNumber_Type[p], '.Protein_names', sep="")))
@@ -692,11 +690,11 @@ for(r in 1:length(batch))
 													write.table(input.overlapType, paste(prename,'_',overlapType[o],'.txt',sep=""), quote=FALSE, row.names=FALSE, col.names=FALSE)
 													
 													# --- csv -----------------------------------------------------------------------------------------
-													input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.mouse.Gene.ID %in% X))
-													input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.mouse.Gene.ID %in% X))
+													input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.human.Gene.ID %in% X))
+													input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.human.Gene.ID %in% X))
 													input.overlapType.ExoCarta.idx = sapply(input.overlapType, FUN=function(X) which(ExoCarta_Protein.entrezgene %in% X))
 													uniprot_id.all <- c()
-													mgi_id.all <- c()
+													hgnc_id.all <- c()
 													gene_symbol.all <- c()
 													gene_name.all <- c()
 													protein_name.all <- c()
@@ -707,71 +705,71 @@ for(r in 1:length(batch))
 														ExoCarta.HitNumber = length(unlist(input.overlapType.ExoCarta.idx[j]))
 														
 														if(Sample1.HitNumber == 1) {
-															uniprot_id = Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]
-															mgi_id = Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]
-															gene_symbol = Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]
-															gene_name = Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
-															protein_name = Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
+															uniprot_id = Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]
+															hgnc_id = Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]
+															gene_symbol = Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]
+															gene_name = Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
+															protein_name = Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
 														} else if(Sample1.HitNumber == 0) {
 															if(Sample2.HitNumber == 1) {
-																uniprot_id = Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]
-																mgi_id = Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]
-																gene_symbol = Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]
-																gene_name = Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
-																protein_name = Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
+																uniprot_id = Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]
+																hgnc_id = Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]
+																gene_symbol = Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]
+																gene_name = Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
+																protein_name = Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
 															} else if(Sample2.HitNumber == 0) {
 																if(ExoCarta.HitNumber == 1) {
 																	uniprot_id = ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])]
-																	mgi_id = ExoCarta_Protein.mgi_id[unlist(input.overlapType.ExoCarta.idx[j])]
+																	hgnc_id = ExoCarta_Protein.hgnc_id[unlist(input.overlapType.ExoCarta.idx[j])]
 																	gene_symbol = ExoCarta_Protein.gene_symbol[unlist(input.overlapType.ExoCarta.idx[j])]
 																	gene_name = ExoCarta_Protein.description[unlist(input.overlapType.ExoCarta.idx[j])]
 																	protein_name = ExoCarta_Protein.Protein_names[unlist(input.overlapType.ExoCarta.idx[j])]
 																} else if(ExoCarta.HitNumber == 0) {
 																	uniprot_id = ''
-																	mgi_id = ''
+																	hgnc_id = ''
 																	gene_symbol = ''
 																	gene_name = ''
 																	protein_name = ''
-																	cat('[Warning] mouse.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.mouse.Gene.ID and ExoCarta_Protein.entrezgene.\n', sep="")
+																	cat('[Warning] human.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.human.Gene.ID and ExoCarta_Protein.entrezgene.\n', sep="")
 																} else if(ExoCarta.HitNumber > 1) {
 																	uniprot_id = paste(unique(ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
-																	mgi_id = paste(unique(ExoCarta_Protein.mgi_id[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
+																	hgnc_id = paste(unique(ExoCarta_Protein.hgnc_id[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																	gene_symbol = paste(unique(ExoCarta_Protein.gene_symbol[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																	gene_name = paste(unique(ExoCarta_Protein.description[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																	protein_name = paste(unique(ExoCarta_Protein.Protein_names[unlist(input.overlapType.ExoCarta.idx[j])]), collapse="|")
 																	
 																	if(length(unique(ExoCarta_Protein.uniprotswissprot[unlist(input.overlapType.ExoCarta.idx[j])])) > 1)
-																	cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"ExoCarta_Protein.entrezgene\".\n', sep="")
+																	cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"ExoCarta_Protein.entrezgene\".\n', sep="")
 																}
 															} else if(Sample2.HitNumber > 1) {
-																uniprot_id = paste(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-																mgi_id = paste(unique(Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-																gene_symbol = paste(unique(Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-																gene_name = paste(unique(Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-																protein_name = paste(unique(Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+																uniprot_id = paste(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+																hgnc_id = paste(unique(Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+																gene_symbol = paste(unique(Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+																gene_name = paste(unique(Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+																protein_name = paste(unique(Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
 																
-																if(length(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
-																cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.mouse.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+																if(length(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
+																cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.human.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 															}
 														} else if(Sample1.HitNumber > 1) {
-															uniprot_id = paste(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															mgi_id = paste(unique(Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															gene_symbol = paste(unique(Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															gene_name = paste(unique(Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-															protein_name = paste(unique(Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															uniprot_id = paste(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															hgnc_id = paste(unique(Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															gene_symbol = paste(unique(Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															gene_name = paste(unique(Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+															protein_name = paste(unique(Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
 															
-															if(length(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
-															cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.mouse.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+															if(length(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
+															cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.human.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 														}
 														
 														uniprot_id.all = c(uniprot_id.all, uniprot_id)
-														mgi_id.all = c(mgi_id.all, mgi_id)
+														hgnc_id.all = c(hgnc_id.all, hgnc_id)
 														gene_symbol.all = c(gene_symbol.all, gene_symbol)
 														gene_name.all = c(gene_name.all, gene_name)
 														protein_name.all = c(protein_name.all, protein_name)
 													}
-													input.overlapType.info = cbind(input.overlapType, uniprot_id.all, mgi_id.all, gene_symbol.all, gene_name.all, protein_name.all)
-													colnames(input.overlapType.info) = c('mouse.Gene.ID','mouse.UniProt','mouse.MGI.ID','mouse.MGI.Symbol','mouse.Gene.names','mouse.Protein.names')
+													input.overlapType.info = cbind(input.overlapType, uniprot_id.all, hgnc_id.all, gene_symbol.all, gene_name.all, protein_name.all)
+													colnames(input.overlapType.info) = c('human.Gene.ID','human.UniProt','human.HGNC.ID','human.HGNC.Symbol','human.Gene.names','human.Protein.names')
 													#write.table(input.overlapType.info, paste(prename,'_',overlapType[o],'.csv',sep=""), quote=TRUE, na="", sep=",", row.names=FALSE)
 													
 													# --- xlsx ----------------------------------------------------------------------------------------
@@ -837,34 +835,34 @@ for(r in 1:length(batch))
 							} else if(n == 3) {		# n = 3
 								
 								Name1 <- dataset[combn.idx[1,i]]
-								Name1.homologene.mouse.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name1.homologene.mouse.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.mouse.UniProt', sep="")))
-								Name1.homologene.mouse.MGI.ID = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name1.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name1.homologene.mouse.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name1.homologene.mouse.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.mouse.Protein.names', sep="")))
-								input1 = Name1.homologene.mouse.Gene.ID[which(Name1.homologene.mouse.Gene.ID != '')]
-								input1.idx = which(Name1.homologene.mouse.Gene.ID != '')
+								Name1.homologene.human.Gene.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.ID', sep="")))
+								Name1.homologene.human.UniProt = eval(parse(text=paste(Name1, '.', 'homologene.human.UniProt', sep="")))
+								Name1.homologene.human.HGNC.ID = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name1.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name1, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name1.homologene.human.Gene.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Gene.names', sep="")))
+								Name1.homologene.human.Protein.names = eval(parse(text=paste(Name1, '.', 'homologene.human.Protein.names', sep="")))
+								input1 = Name1.homologene.human.Gene.ID[which(Name1.homologene.human.Gene.ID != '')]
+								input1.idx = which(Name1.homologene.human.Gene.ID != '')
 								
 								Name2 <- dataset[combn.idx[2,i]]
-								Name2.homologene.mouse.Gene.ID = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name2.homologene.mouse.UniProt = eval(parse(text=paste(Name2, '.', 'homologene.mouse.UniProt', sep="")))
-								Name2.homologene.mouse.MGI.ID = eval(parse(text=paste(Name2, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name2.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name2, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name2.homologene.mouse.Gene.names = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name2.homologene.mouse.Protein.names = eval(parse(text=paste(Name2, '.', 'homologene.mouse.Protein.names', sep="")))
-								input2 = Name2.homologene.mouse.Gene.ID[which(Name2.homologene.mouse.Gene.ID != '')]
-								input2.idx = which(Name2.homologene.mouse.Gene.ID != '')
+								Name2.homologene.human.Gene.ID = eval(parse(text=paste(Name2, '.', 'homologene.human.Gene.ID', sep="")))
+								Name2.homologene.human.UniProt = eval(parse(text=paste(Name2, '.', 'homologene.human.UniProt', sep="")))
+								Name2.homologene.human.HGNC.ID = eval(parse(text=paste(Name2, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name2.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name2, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name2.homologene.human.Gene.names = eval(parse(text=paste(Name2, '.', 'homologene.human.Gene.names', sep="")))
+								Name2.homologene.human.Protein.names = eval(parse(text=paste(Name2, '.', 'homologene.human.Protein.names', sep="")))
+								input2 = Name2.homologene.human.Gene.ID[which(Name2.homologene.human.Gene.ID != '')]
+								input2.idx = which(Name2.homologene.human.Gene.ID != '')
 								
 								Name3 <- dataset[combn.idx[3,i]]
-								Name3.homologene.mouse.Gene.ID = eval(parse(text=paste(Name3, '.', 'homologene.mouse.Gene.ID', sep="")))
-								Name3.homologene.mouse.UniProt = eval(parse(text=paste(Name3, '.', 'homologene.mouse.UniProt', sep="")))
-								Name3.homologene.mouse.MGI.ID = eval(parse(text=paste(Name3, '.', 'homologene.mouse.MGI.ID', sep="")))
-								Name3.homologene.mouse.MGI.Symbol = eval(parse(text=paste(Name3, '.', 'homologene.mouse.MGI.Symbol', sep="")))
-								Name3.homologene.mouse.Gene.names = eval(parse(text=paste(Name3, '.', 'homologene.mouse.Gene.names', sep="")))
-								Name3.homologene.mouse.Protein.names = eval(parse(text=paste(Name3, '.', 'homologene.mouse.Protein.names', sep="")))
-								input3 = Name3.homologene.mouse.Gene.ID[which(Name3.homologene.mouse.Gene.ID != '')]
-								input3.idx = which(Name3.homologene.mouse.Gene.ID != '')
+								Name3.homologene.human.Gene.ID = eval(parse(text=paste(Name3, '.', 'homologene.human.Gene.ID', sep="")))
+								Name3.homologene.human.UniProt = eval(parse(text=paste(Name3, '.', 'homologene.human.UniProt', sep="")))
+								Name3.homologene.human.HGNC.ID = eval(parse(text=paste(Name3, '.', 'homologene.human.HGNC.ID', sep="")))
+								Name3.homologene.human.HGNC.Symbol = eval(parse(text=paste(Name3, '.', 'homologene.human.HGNC.Symbol', sep="")))
+								Name3.homologene.human.Gene.names = eval(parse(text=paste(Name3, '.', 'homologene.human.Gene.names', sep="")))
+								Name3.homologene.human.Protein.names = eval(parse(text=paste(Name3, '.', 'homologene.human.Protein.names', sep="")))
+								input3 = Name3.homologene.human.Gene.ID[which(Name3.homologene.human.Gene.ID != '')]
+								input3.idx = which(Name3.homologene.human.Gene.ID != '')
 								
 								if(length(input1) == 0 & length(input2) == 0 & length(input3) == 0) {
 									# Do nothing
@@ -923,11 +921,11 @@ for(r in 1:length(batch))
 												write.table(input.overlapType, paste(prename,'_',overlapType[o],'.txt',sep=""), quote=FALSE, row.names=FALSE, col.names=FALSE)
 												
 												# --- csv -----------------------------------------------------------------------------------------
-												input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.mouse.Gene.ID %in% X))
-												input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.mouse.Gene.ID %in% X))
-												input.overlapType.Sample3.idx = sapply(input.overlapType, FUN=function(X) which(Name3.homologene.mouse.Gene.ID %in% X))
+												input.overlapType.Sample1.idx = sapply(input.overlapType, FUN=function(X) which(Name1.homologene.human.Gene.ID %in% X))
+												input.overlapType.Sample2.idx = sapply(input.overlapType, FUN=function(X) which(Name2.homologene.human.Gene.ID %in% X))
+												input.overlapType.Sample3.idx = sapply(input.overlapType, FUN=function(X) which(Name3.homologene.human.Gene.ID %in% X))
 												uniprot_id.all <- c()
-												mgi_id.all <- c()
+												hgnc_id.all <- c()
 												gene_symbol.all <- c()
 												gene_name.all <- c()
 												protein_name.all <- c()
@@ -938,71 +936,71 @@ for(r in 1:length(batch))
 													Sample3.HitNumber = length(unlist(input.overlapType.Sample3.idx[j]))
 													
 													if(Sample1.HitNumber == 1) {
-														uniprot_id = Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]
-														mgi_id = Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]
-														gene_symbol = Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]
-														gene_name = Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
-														protein_name = Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
+														uniprot_id = Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]
+														hgnc_id = Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]
+														gene_symbol = Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]
+														gene_name = Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]
+														protein_name = Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]
 													} else if(Sample1.HitNumber == 0) {
 														if(Sample2.HitNumber == 1) {
-															uniprot_id = Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]
-															mgi_id = Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]
-															gene_symbol = Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]
-															gene_name = Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
-															protein_name = Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
+															uniprot_id = Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]
+															hgnc_id = Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]
+															gene_symbol = Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]
+															gene_name = Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]
+															protein_name = Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]
 														} else if(Sample2.HitNumber == 0) {
 															if(Sample3.HitNumber == 1) {
-																uniprot_id = Name3.homologene.mouse.UniProt[unlist(input.overlapType.Sample3.idx[j])]
-																mgi_id = Name3.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample3.idx[j])]
-																gene_symbol = Name3.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample3.idx[j])]
-																gene_name = Name3.homologene.mouse.Gene.names[unlist(input.overlapType.Sample3.idx[j])]
-																protein_name = Name3.homologene.mouse.Protein.names[unlist(input.overlapType.Sample3.idx[j])]
+																uniprot_id = Name3.homologene.human.UniProt[unlist(input.overlapType.Sample3.idx[j])]
+																hgnc_id = Name3.homologene.human.HGNC.ID[unlist(input.overlapType.Sample3.idx[j])]
+																gene_symbol = Name3.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample3.idx[j])]
+																gene_name = Name3.homologene.human.Gene.names[unlist(input.overlapType.Sample3.idx[j])]
+																protein_name = Name3.homologene.human.Protein.names[unlist(input.overlapType.Sample3.idx[j])]
 															} else if(Sample3.HitNumber == 0) {
 																uniprot_id = ''
-																mgi_id = ''
+																hgnc_id = ''
 																gene_symbol = ''
 																gene_name = ''
 																protein_name = ''
-																cat('[Warning] mouse.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.mouse.Gene.ID.\n', sep="")
+																cat('[Warning] human.Gene.ID:',input.overlapType[j],' does not have any id mapping to all homologene.human.Gene.ID.\n', sep="")
 															} else if(Sample3.HitNumber > 1) {
-																uniprot_id = paste(unique(Name3.homologene.mouse.UniProt[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
-																mgi_id = paste(unique(Name3.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
-																gene_symbol = paste(unique(Name3.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
-																gene_name = paste(unique(Name3.homologene.mouse.Gene.names[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
-																protein_name = paste(unique(Name3.homologene.mouse.Protein.names[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
+																uniprot_id = paste(unique(Name3.homologene.human.UniProt[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
+																hgnc_id = paste(unique(Name3.homologene.human.HGNC.ID[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
+																gene_symbol = paste(unique(Name3.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
+																gene_name = paste(unique(Name3.homologene.human.Gene.names[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
+																protein_name = paste(unique(Name3.homologene.human.Protein.names[unlist(input.overlapType.Sample3.idx[j])]), collapse="|")
 																
-																if(length(unique(Name3.homologene.mouse.UniProt[unlist(input.overlapType.Sample3.idx[j])])) > 1)
-																cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name3.homologene.mouse.Gene.ID (',dataset[combn.idx[3,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+																if(length(unique(Name3.homologene.human.UniProt[unlist(input.overlapType.Sample3.idx[j])])) > 1)
+																cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name3.homologene.human.Gene.ID (',dataset[combn.idx[3,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 															}
 														} else if(Sample2.HitNumber > 1) {
-															uniprot_id = paste(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															mgi_id = paste(unique(Name2.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															gene_symbol = paste(unique(Name2.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															gene_name = paste(unique(Name2.homologene.mouse.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
-															protein_name = paste(unique(Name2.homologene.mouse.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															uniprot_id = paste(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															hgnc_id = paste(unique(Name2.homologene.human.HGNC.ID[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															gene_symbol = paste(unique(Name2.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															gene_name = paste(unique(Name2.homologene.human.Gene.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
+															protein_name = paste(unique(Name2.homologene.human.Protein.names[unlist(input.overlapType.Sample2.idx[j])]), collapse="|")
 															
-															if(length(unique(Name2.homologene.mouse.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
-															cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.mouse.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+															if(length(unique(Name2.homologene.human.UniProt[unlist(input.overlapType.Sample2.idx[j])])) > 1)
+															cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name2.homologene.human.Gene.ID (',dataset[combn.idx[2,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 														}
 													} else if(Sample1.HitNumber > 1) {
-														uniprot_id = paste(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														mgi_id = paste(unique(Name1.homologene.mouse.MGI.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														gene_symbol = paste(unique(Name1.homologene.mouse.MGI.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														gene_name = paste(unique(Name1.homologene.mouse.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
-														protein_name = paste(unique(Name1.homologene.mouse.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														uniprot_id = paste(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														hgnc_id = paste(unique(Name1.homologene.human.HGNC.ID[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														gene_symbol = paste(unique(Name1.homologene.human.HGNC.Symbol[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														gene_name = paste(unique(Name1.homologene.human.Gene.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
+														protein_name = paste(unique(Name1.homologene.human.Protein.names[unlist(input.overlapType.Sample1.idx[j])]), collapse="|")
 														
-														if(length(unique(Name1.homologene.mouse.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
-														cat('[Note] mouse.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.mouse.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.mouse.Gene.ID)\".\n', sep="")
+														if(length(unique(Name1.homologene.human.UniProt[unlist(input.overlapType.Sample1.idx[j])])) > 1)
+														cat('[Note] human.Gene.ID:',input.overlapType[j],' has more than two id mapping to \"Name1.homologene.human.Gene.ID (',dataset[combn.idx[1,i]],'.homologene.human.Gene.ID)\".\n', sep="")
 													}
 													
 													uniprot_id.all = c(uniprot_id.all, uniprot_id)
-													mgi_id.all = c(mgi_id.all, mgi_id)
+													hgnc_id.all = c(hgnc_id.all, hgnc_id)
 													gene_symbol.all = c(gene_symbol.all, gene_symbol)
 													gene_name.all = c(gene_name.all, gene_name)
 													protein_name.all = c(protein_name.all, protein_name)
 												}
-												input.overlapType.info = cbind(input.overlapType, uniprot_id.all, mgi_id.all, gene_symbol.all, gene_name.all, protein_name.all)
-												colnames(input.overlapType.info) = c('mouse.Gene.ID','mouse.UniProt','mouse.MGI.ID','mouse.MGI.Symbol','mouse.Gene.names','mouse.Protein.names')
+												input.overlapType.info = cbind(input.overlapType, uniprot_id.all, hgnc_id.all, gene_symbol.all, gene_name.all, protein_name.all)
+												colnames(input.overlapType.info) = c('human.Gene.ID','human.UniProt','human.HGNC.ID','human.HGNC.Symbol','human.Gene.names','human.Protein.names')
 												#write.table(input.overlapType.info, paste(prename,'_',overlapType[o],'.csv',sep=""), quote=TRUE, na="", sep=",", row.names=FALSE)
 												
 												# --- xlsx ----------------------------------------------------------------------------------------
