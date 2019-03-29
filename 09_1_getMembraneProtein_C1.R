@@ -2,7 +2,7 @@ rm(list=ls())	# remove all variables in workspace
 
 setwd("D:/Exo")
 
-Sample <- "C1"
+Sample <- "pcMSC_N230"
 
 mainDir <- paste('./Data/',Sample,sep="")
 subDir <- "09_membraneProtein"
@@ -31,14 +31,8 @@ library(xlsx)
 library(openxlsx)
 
 
-if(Sample == "C1"){
-	batch <- c('20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "C1_8R"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th')
-}else if(Sample == "C1_ALL"){
-	batch <- c('20141121_sev_C2','20150311_Sev_exosome','20150324_exosome1','20150324_exosome2','20150428_MinShun_100X','20150428_MinShun_100X_2','C1_150','C1_5th','20150828_C1_1','20150828_C1_2','20150828_C1_3')
-}else if(Sample == "E8"){
-	batch <- c('20150828_E8_1','20150828_E8_2','20150828_E8_3')
+if(Sample == "pcMSC_N230"){
+	batch <- c('P3_3rd_181022','P4_4th_181022','P4_5th_181022')
 }else{
 	print(paste('Please provide filename of Sample ',Sample,sep=""))
 }
@@ -56,7 +50,7 @@ lipidraft <- c('lipid raft','flotillin','caveolin')
 membrane.category <- c(membrane, surface, tetraspanin, CD, transport, channel, integrin, lipidraft)
 
 membrane.FP <- c('Basement membrane','Basement-membrane')	# false-positive keyword
-CD.FP <- c('Cdc','cds','CDV','CD2-associated')				# false-positive keyword
+CD.FP <- c('Cdc','cds','CDV','CD2-associated','DCD')		# false-positive keyword
 integrin.FP <- c('integrin interactor')						# false-positive keyword
 
 
@@ -83,7 +77,7 @@ for(r in 1:length(batch))
 					# === input =======================================================================================
 					#input <- read.csv(paste('./Data/',Sample,'/04_drug/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_drug.csv',sep=""), header=TRUE, stringsAsFactors=FALSE)
 					input <- read.xlsx(paste('./Data/',Sample,'/04_drug/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_drug.xlsx',sep=""), sheet='UniProt_drug', colNames=TRUE, rowNames=FALSE, check.names=FALSE)
-					mouse.Protein.names <- as.character(input$mouse.Protein.names)
+					human.Protein.names <- as.character(input$human.Protein.names)
 					
 					
 					# === search for membrane-related proteins by name ================================================
@@ -105,8 +99,8 @@ for(r in 1:length(batch))
 					
 					for(j in 1:length(membrane.category))
 					{
-						category.matched.idx <- grep(membrane.category[j], mouse.Protein.names, ignore.case=TRUE)
-						category.matched.value <- grep(membrane.category[j], mouse.Protein.names, ignore.case=TRUE, value=TRUE)
+						category.matched.idx <- grep(membrane.category[j], human.Protein.names, ignore.case=TRUE)
+						category.matched.value <- grep(membrane.category[j], human.Protein.names, ignore.case=TRUE, value=TRUE)
 						#category.matched.value.levels <- levels(as.factor(category.matched.value))
 						#category.matched.value.levels = sort(category.matched.value.levels)
 						#print(category.matched.idx)
@@ -134,8 +128,8 @@ for(r in 1:length(batch))
 								FP.comb.matched.value <- c()
 								for(k in 1:length(FP))
 								{
-									FP.matched.idx <- grep(FP[k], mouse.Protein.names[category.matched.idx], ignore.case=TRUE)
-									FP.matched.value <- grep(FP[k], mouse.Protein.names[category.matched.idx], ignore.case=TRUE, value=TRUE)
+									FP.matched.idx <- grep(FP[k], human.Protein.names[category.matched.idx], ignore.case=TRUE)
+									FP.matched.value <- grep(FP[k], human.Protein.names[category.matched.idx], ignore.case=TRUE, value=TRUE)
 									
 									if(length(FP.matched.idx) > 0)
 									{
@@ -190,7 +184,7 @@ for(r in 1:length(batch))
 										style <- createStyle(textDecoration="bold")
 										addStyle(wb, sheet, style, rows=1, cols=c(1:ncol(sheetData)), stack=TRUE)
 										
-										right_align.idx = which(colnames(sheetData) %in% c('mouse.Frequency'))
+										right_align.idx = which(colnames(sheetData) %in% c('human.Frequency'))
 										if(length(right_align.idx) > 0) {
 											style <- createStyle(halign="right", valign="center")
 											addStyle(wb, sheet, style, rows=c(2:(1+nrow(sheetData))), cols=right_align.idx, gridExpand=TRUE, stack=TRUE)
@@ -208,7 +202,7 @@ for(r in 1:length(batch))
 											style <- createStyle(textDecoration="bold")
 											addStyle(wb2, sheet, style, rows=1, cols=c(1:ncol(sheetData)), stack=TRUE)
 											
-											right_align.idx = which(colnames(sheetData) %in% c('mouse.Frequency'))
+											right_align.idx = which(colnames(sheetData) %in% c('human.Frequency'))
 											if(length(right_align.idx) > 0) {
 												style <- createStyle(halign="right", valign="center")
 												addStyle(wb2, sheet, style, rows=c(2:(1+nrow(sheetData))), cols=right_align.idx, gridExpand=TRUE, stack=TRUE)
@@ -231,17 +225,17 @@ for(r in 1:length(batch))
 							#write.csv(unique.matched.info, paste('./Data/',Sample,'/09_membraneProtein/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_membraneRelated','.csv',sep=""), quote=TRUE, row.names=FALSE, na="")
 							#if(r == 1 & folder[f] == 'high')	write.csv(unique.matched.info, paste('./Data/',Sample,'/09_membraneProtein/',Sample,'_exo_UniProt_membraneRelated','.csv',sep=""), quote=TRUE, row.names=FALSE, na="")
 							
-							unique.matched.info.name = unique.matched.info[,c('mouse.UniProt','mouse.Gene.ID','mouse.MGI.ID','mouse.MGI.Symbol','mouse.Gene.names','mouse.Protein.names')]
+							unique.matched.info.name = unique.matched.info[,c('human.UniProt','human.Gene.ID','human.HGNC.ID','human.HGNC.Symbol','human.Gene.names','human.Protein.names')]
 							#write.csv(unique.matched.info.name, paste('./Data/',Sample,'/09_membraneProtein/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_membraneRelated','.name','.csv',sep=""), quote=TRUE, row.names=FALSE, na="")
 							#if(r == 1 & folder[f] == 'high')	write.csv(unique.matched.info.name, paste('./Data/',Sample,'/09_membraneProtein/',Sample,'_exo_UniProt_membraneRelated','.name','.csv',sep=""), quote=TRUE, row.names=FALSE, na="")
 							
 							for(s in 1:2)
 							{
 								if(s == 1) {
-									sheet = paste(Sample,'_exo_membraneRelated',sep="")
+									sheet = paste(Sample,'_exMem',sep="")
 									sheetData = unique.matched.info
 								} else if(s == 2) {
-									sheet = paste(Sample,'_exo_membraneRelated','.','name',sep="")
+									sheet = paste(Sample,'_exMem','.','name',sep="")
 									sheetData = unique.matched.info.name
 								}
 								
@@ -259,7 +253,7 @@ for(r in 1:length(batch))
 										style <- createStyle(textDecoration="bold")
 										addStyle(wb, sheet, style, rows=1, cols=c(1:ncol(sheetData)), stack=TRUE)
 										
-										right_align.idx = which(colnames(sheetData) %in% c('mouse.Frequency'))
+										right_align.idx = which(colnames(sheetData) %in% c('human.Frequency'))
 										if(length(right_align.idx) > 0) {
 											style <- createStyle(halign="right", valign="center")
 											addStyle(wb, sheet, style, rows=c(2:(1+nrow(sheetData))), cols=right_align.idx, gridExpand=TRUE, stack=TRUE)
@@ -277,7 +271,7 @@ for(r in 1:length(batch))
 											style <- createStyle(textDecoration="bold")
 											addStyle(wb2, sheet, style, rows=1, cols=c(1:ncol(sheetData)), stack=TRUE)
 											
-											right_align.idx = which(colnames(sheetData) %in% c('mouse.Frequency'))
+											right_align.idx = which(colnames(sheetData) %in% c('human.Frequency'))
 											if(length(right_align.idx) > 0) {
 												style <- createStyle(halign="right", valign="center")
 												addStyle(wb2, sheet, style, rows=c(2:(1+nrow(sheetData))), cols=right_align.idx, gridExpand=TRUE, stack=TRUE)
@@ -289,7 +283,7 @@ for(r in 1:length(batch))
 						}
 					}
 					
-					sheetName = c(paste(Sample,'_exo_membraneRelated',sep=""), paste(Sample,'_exo_membraneRelated','.','name',sep=""), membrane.category)
+					sheetName = c(paste(Sample,'_exMem',sep=""), paste(Sample,'_exMem','.','name',sep=""), membrane.category)
 					worksheetOrder(wb) = unlist(sapply(sheetName, FUN=function(N) which(names(wb) %in% unlist(N))))
 					if(length(wb$sheet_names) > 0) {
 						openxlsx::saveWorkbook(wb, file=paste('./Data/',Sample,'/09_membraneProtein/subset/n_',r,'/',folder[f],'/',Sample,'_exo_UniProt_membraneRelated','.xlsx',sep=""), overwrite=TRUE)
@@ -297,7 +291,7 @@ for(r in 1:length(batch))
 					
 					if(r == 1 & folder[f] == 'high')
 					{
-						sheetName = c(paste(Sample,'_exo_membraneRelated',sep=""), paste(Sample,'_exo_membraneRelated','.','name',sep=""), membrane.category)
+						sheetName = c(paste(Sample,'_exMem',sep=""), paste(Sample,'_exMem','.','name',sep=""), membrane.category)
 						worksheetOrder(wb2) = unlist(sapply(sheetName, FUN=function(N) which(names(wb2) %in% unlist(N))))
 						if(length(wb2$sheet_names) > 0) {
 							openxlsx::saveWorkbook(wb2, file=paste('./Data/',Sample,'/09_membraneProtein/',Sample,'_exo_UniProt_membraneRelated','.xlsx',sep=""), overwrite=TRUE)
@@ -345,7 +339,7 @@ for(r in 1:length(batch))
 										style <- createStyle(textDecoration="bold")
 										addStyle(wb, sheet, style, rows=1, cols=c(1:ncol(sheetData)), stack=TRUE)
 										
-										right_align.idx = which(colnames(sheetData) %in% c('mouse.Frequency'))
+										right_align.idx = which(colnames(sheetData) %in% c('human.Frequency'))
 										if(length(right_align.idx) > 0) {
 											style <- createStyle(halign="right", valign="center")
 											addStyle(wb, sheet, style, rows=c(2:(1+nrow(sheetData))), cols=right_align.idx, gridExpand=TRUE, stack=TRUE)
