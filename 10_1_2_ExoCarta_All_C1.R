@@ -280,6 +280,11 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='720'),'hgnc_id'] = 'HGNC:1323'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='720'),'uniprotswissprot'] = 'P0C0L4'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='720'),'description'] = 'complement C4A (Rodgers blood group) [Source:HGNC Symbol;Acc:HGNC:1323]'
+# https://www.ncbi.nlm.nih.gov/gene/1409; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:2388; http://www.uniprot.org/uniprot/P02489
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1409'),'hgnc_symbol'] = 'CRYAA'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1409'),'hgnc_id'] = 'HGNC:2388'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1409'),'uniprotswissprot'] = 'P02489'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1409'),'description'] = 'crystallin alpha A [Source:HGNC Symbol;Acc:HGNC:2388]'
 # https://www.ncbi.nlm.nih.gov/gene/1565; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:2625; http://www.uniprot.org/uniprot/P10635
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1565'),'hgnc_symbol'] = 'CYP2D6'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1565'),'hgnc_id'] = 'HGNC:2625'
@@ -290,6 +295,11 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1652'),'hgnc_id'] = 'HGNC:2732'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1652'),'uniprotswissprot'] = 'P30046'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='1652'),'description'] = 'D-dopachrome tautomerase [Source:HGNC Symbol;Acc:HGNC:2732]'
+# https://www.ncbi.nlm.nih.gov/gene/2222; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:3629; http://www.uniprot.org/uniprot/P37268
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2222'),'hgnc_symbol'] = 'FDFT1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2222'),'hgnc_id'] = 'HGNC:3629'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2222'),'uniprotswissprot'] = 'P37268'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2222'),'description'] = 'farnesyl-diphosphate farnesyltransferase 1 [Source:HGNC Symbol;Acc:HGNC:3629]'
 # https://www.ncbi.nlm.nih.gov/gene/2632; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:4180; http://www.uniprot.org/uniprot/Q04446
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2632'),'hgnc_symbol'] = 'GBE1'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2632'),'hgnc_id'] = 'HGNC:4180'
@@ -300,6 +310,16 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2657'),'hgnc_id'] = 'HGNC:4214'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2657'),'uniprotswissprot'] = 'P27539'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='2657'),'description'] = 'growth differentiation factor 1 [Source:HGNC Symbol;Acc:HGNC:4214]'
+# https://www.ncbi.nlm.nih.gov/gene/3123; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:4948
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3123'),'hgnc_symbol'] = 'HLA-DRB1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3123'),'hgnc_id'] = 'HGNC:4948'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3123'),'uniprotswissprot'] = 'P01911;P01912;P04229;P20039;Q29974;Q30134;Q30167;Q5Y7A7;Q95IE3;Q9GIY3'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3123'),'description'] = 'major histocompatibility complex, class II, DR beta 1 [Source:HGNC Symbol;Acc:HGNC:4948]'
+# https://www.ncbi.nlm.nih.gov/gene/3125; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:4951; http://www.uniprot.org/uniprot/P79483
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3125'),'hgnc_symbol'] = 'HLA-DRB3'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3125'),'hgnc_id'] = 'HGNC:4951'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3125'),'uniprotswissprot'] = 'P79483'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3125'),'description'] = 'major histocompatibility complex, class II, DR beta 3 [Source:HGNC Symbol;Acc:HGNC:4951]'
 # https://www.ncbi.nlm.nih.gov/gene/3481; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:5466; http://www.uniprot.org/uniprot/P01344
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3481'),'hgnc_symbol'] = 'IGF2'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='3481'),'hgnc_id'] = 'HGNC:5466'
@@ -325,6 +345,16 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6693'),'hgnc_id'] = 'HGNC:11249'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6693'),'uniprotswissprot'] = 'P16150'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6693'),'description'] = 'sialophorin [Source:HGNC Symbol;Acc:HGNC:11249]'
+# https://www.ncbi.nlm.nih.gov/gene/6905; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:11582; http://www.uniprot.org/uniprot/Q15813
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6905'),'hgnc_symbol'] = 'TBCE'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6905'),'hgnc_id'] = 'HGNC:11582'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6905'),'uniprotswissprot'] = 'Q15813'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='6905'),'description'] = 'tubulin folding cofactor E [Source:HGNC Symbol;Acc:HGNC:11582]'
+# https://www.ncbi.nlm.nih.gov/gene/7375; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:12627; http://www.uniprot.org/uniprot/Q13107
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7375'),'hgnc_symbol'] = 'USP4'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7375'),'hgnc_id'] = 'HGNC:12627'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7375'),'uniprotswissprot'] = 'Q13107'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7375'),'description'] = 'ubiquitin specific peptidase 4 [Source:HGNC Symbol;Acc:HGNC:12627]'
 # https://www.ncbi.nlm.nih.gov/gene/8411; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:3185; http://www.uniprot.org/uniprot/Q15075
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8411'),'hgnc_symbol'] = 'EEA1'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8411'),'hgnc_id'] = 'HGNC:3185'
@@ -335,16 +365,41 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8471'),'hgnc_id'] = 'HGNC:6128'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8471'),'uniprotswissprot'] = 'O14654'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8471'),'description'] = 'insulin receptor substrate 4 [Source:HGNC Symbol;Acc:HGNC:6128]'
+# https://www.ncbi.nlm.nih.gov/gene/8519; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:5412; http://www.uniprot.org/uniprot/P13164
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8519'),'hgnc_symbol'] = 'IFITM1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8519'),'hgnc_id'] = 'HGNC:5412'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8519'),'uniprotswissprot'] = 'P13164'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8519'),'description'] = 'interferon induced transmembrane protein 1 [Source:HGNC Symbol;Acc:HGNC:5412]'
 # https://www.ncbi.nlm.nih.gov/gene/8566; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:8819; http://www.uniprot.org/uniprot/O00764
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8566'),'hgnc_symbol'] = 'PDXK'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8566'),'hgnc_id'] = 'HGNC:8819'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8566'),'uniprotswissprot'] = 'O00764'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8566'),'description'] = 'pyridoxal kinase [Source:HGNC Symbol;Acc:HGNC:8819]'
+# https://www.ncbi.nlm.nih.gov/gene/8857; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:13572; http://www.uniprot.org/uniprot/Q9Y6R7
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8857'),'hgnc_symbol'] = 'FCGBP'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8857'),'hgnc_id'] = 'HGNC:13572'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8857'),'uniprotswissprot'] = 'Q9Y6R7'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8857'),'description'] = 'Fc fragment of IgG binding protein [Source:HGNC Symbol;Acc:HGNC:13572]'
+# https://www.ncbi.nlm.nih.gov/gene/8878; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:11280; http://www.uniprot.org/uniprot/Q13501
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8878'),'hgnc_symbol'] = 'SQSTM1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8878'),'hgnc_id'] = 'HGNC:11280'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8878'),'uniprotswissprot'] = 'Q13501'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='8878'),'description'] = 'sequestosome 1 [Source:HGNC Symbol;Acc:HGNC:11280]'
+# https://www.ncbi.nlm.nih.gov/gene/9138; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:681; http://www.uniprot.org/uniprot/Q92888
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9138'),'hgnc_symbol'] = 'ARHGEF1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9138'),'hgnc_id'] = 'HGNC:681'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9138'),'uniprotswissprot'] = 'Q92888'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9138'),'description'] = 'Rho guanine nucleotide exchange factor 1 [Source:HGNC Symbol;Acc:HGNC:681]'
 # https://www.ncbi.nlm.nih.gov/gene/9414; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:11828; http://www.uniprot.org/uniprot/Q9UDY2
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9414'),'hgnc_symbol'] = 'TJP2'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9414'),'hgnc_id'] = 'HGNC:11828'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9414'),'uniprotswissprot'] = 'Q9UDY2'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9414'),'description'] = 'tight junction protein 2 [Source:HGNC Symbol;Acc:HGNC:11828]'
+# https://www.ncbi.nlm.nih.gov/gene/9554; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:10700; http://www.uniprot.org/uniprot/O75396
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9554'),'hgnc_symbol'] = 'SEC22B'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9554'),'hgnc_id'] = 'HGNC:10700'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9554'),'uniprotswissprot'] = 'O75396'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9554'),'description'] = 'SEC22 homolog B, vesicle trafficking protein (gene/pseudogene) [Source:HGNC Symbol;Acc:HGNC:10700]'
 # https://www.ncbi.nlm.nih.gov/gene/9659; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:15580; http://www.uniprot.org/uniprot/Q5VU43
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9659'),'hgnc_symbol'] = 'PDE4DIP'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9659'),'hgnc_id'] = 'HGNC:15580'
@@ -355,6 +410,11 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9782'),'hgnc_id'] = 'HGNC:6912'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9782'),'uniprotswissprot'] = 'P43243'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='9782'),'description'] = 'matrin 3 [Source:HGNC Symbol;Acc:HGNC:6912]'
+# https://www.ncbi.nlm.nih.gov/gene/10061; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:71; http://www.uniprot.org/uniprot/Q9UG63
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10061'),'hgnc_symbol'] = 'ABCF2'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10061'),'hgnc_id'] = 'HGNC:71'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10061'),'uniprotswissprot'] = 'Q9UG63'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10061'),'description'] = 'ATP binding cassette subfamily F member 2 [Source:HGNC Symbol;Acc:HGNC:71]'
 # https://www.ncbi.nlm.nih.gov/gene/10436; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:16912; http://www.uniprot.org/uniprot/Q92979
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10436'),'hgnc_symbol'] = 'EMG1'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10436'),'hgnc_id'] = 'HGNC:16912'
@@ -365,6 +425,11 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10715'),'hgnc_id'] = 'HGNC:14253'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10715'),'uniprotswissprot'] = 'P27544'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='10715'),'description'] = 'ceramide synthase 1 [Source:HGNC Symbol;Acc:HGNC:14253]'
+# https://www.ncbi.nlm.nih.gov/gene/11046; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:20799; http://www.uniprot.org/uniprot/Q76EJ3
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11046'),'hgnc_symbol'] = 'SLC35D2'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11046'),'hgnc_id'] = 'HGNC:20799'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11046'),'uniprotswissprot'] = 'Q76EJ3'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11046'),'description'] = 'solute carrier family 35 member D2 [Source:HGNC Symbol;Acc:HGNC:20799]'
 # https://www.ncbi.nlm.nih.gov/gene/11163; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:8051; http://www.uniprot.org/uniprot/Q9NZJ9
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11163'),'hgnc_symbol'] = 'NUDT4'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='11163'),'hgnc_id'] = 'HGNC:8051'
@@ -395,11 +460,21 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='23637'),'hgnc_id'] = 'HGNC:17155'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='23637'),'uniprotswissprot'] = 'Q9Y3P9'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='23637'),'description'] = 'RAB GTPase activating protein 1 [Source:HGNC Symbol;Acc:HGNC:17155]'
+# https://www.ncbi.nlm.nih.gov/gene/26121; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:15446; http://www.uniprot.org/uniprot/Q8WWY3
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26121'),'hgnc_symbol'] = 'PRPF31'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26121'),'hgnc_id'] = 'HGNC:15446'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26121'),'uniprotswissprot'] = 'Q8WWY3'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26121'),'description'] = 'pre-mRNA processing factor 31 [Source:HGNC Symbol;Acc:HGNC:15446]'
 # https://www.ncbi.nlm.nih.gov/gene/26585; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:2001; http://www.uniprot.org/uniprot/O60565
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26585'),'hgnc_symbol'] = 'GREM1'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26585'),'hgnc_id'] = 'HGNC:2001'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26585'),'uniprotswissprot'] = 'O60565'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='26585'),'description'] = 'gremlin 1, DAN family BMP antagonist [Source:HGNC Symbol;Acc:HGNC:2001]'
+# https://www.ncbi.nlm.nih.gov/gene/51206; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:14388; http://www.uniprot.org/uniprot/Q9HCN6
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51206'),'hgnc_symbol'] = 'GP6'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51206'),'hgnc_id'] = 'HGNC:14388'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51206'),'uniprotswissprot'] = 'Q9HCN6'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51206'),'description'] = 'glycoprotein VI platelet [Source:HGNC Symbol;Acc:HGNC:14388]'
 # https://www.ncbi.nlm.nih.gov/gene/56924; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:16061; http://www.uniprot.org/uniprot/Q9NQU5
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='56924'),'hgnc_symbol'] = 'PAK6'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='56924'),'hgnc_id'] = 'HGNC:16061'
@@ -410,6 +485,26 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='57535'),'hgnc_id'] = 'HGNC:29618'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='57535'),'uniprotswissprot'] = 'Q6UXG2'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='57535'),'description'] = 'KIAA1324 [Source:HGNC Symbol;Acc:HGNC:29618]'
+# https://www.ncbi.nlm.nih.gov/gene/80006; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:25828; http://www.uniprot.org/uniprot/A5PLN9
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='80006'),'hgnc_symbol'] = 'TRAPPC13'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='80006'),'hgnc_id'] = 'HGNC:25828'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='80006'),'uniprotswissprot'] = 'A5PLN9'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='80006'),'description'] = 'trafficking protein particle complex 13 [Source:HGNC Symbol;Acc:HGNC:25828]'
+# https://www.ncbi.nlm.nih.gov/gene/83986; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:14163; http://www.uniprot.org/uniprot/Q9H0X4
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='83986'),'hgnc_symbol'] = 'FAM234A'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='83986'),'hgnc_id'] = 'HGNC:14163'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='83986'),'uniprotswissprot'] = 'Q9H0X4'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='83986'),'description'] = 'family with sequence similarity 234 member A [Source:HGNC Symbol;Acc:HGNC:14163]'
+# https://www.ncbi.nlm.nih.gov/gene/84858; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:23589; http://www.uniprot.org/uniprot/Q96F45
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84858'),'hgnc_symbol'] = 'ZNF503'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84858'),'hgnc_id'] = 'HGNC:23589'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84858'),'uniprotswissprot'] = 'Q96F45'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84858'),'description'] = 'zinc finger protein 503 [Source:HGNC Symbol;Acc:HGNC:23589]'
+# https://www.ncbi.nlm.nih.gov/gene/84876; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:25896; http://www.uniprot.org/uniprot/Q96D31
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84876'),'hgnc_symbol'] = 'ORAI1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84876'),'hgnc_id'] = 'HGNC:25896'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84876'),'uniprotswissprot'] = 'Q96D31'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='84876'),'description'] = 'ORAI calcium release-activated calcium modulator 1 [Source:HGNC Symbol;Acc:HGNC:25896]'
 # https://www.ncbi.nlm.nih.gov/gene/150786; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:30272; http://www.uniprot.org/uniprot/Q53S08
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='150786'),'hgnc_symbol'] = 'RAB6D'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='150786'),'hgnc_id'] = 'HGNC:30272'
@@ -425,16 +520,36 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='246181'),'hgnc_id'] = 'HGNC:24056'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='246181'),'uniprotswissprot'] = 'Q8NHP1'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='246181'),'description'] = 'aldo-keto reductase family 7 like (gene/pseudogene) [Source:HGNC Symbol;Acc:HGNC:24056]'
+# https://www.ncbi.nlm.nih.gov/gene/283820; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:22652; http://www.uniprot.org/uniprot/Q5JPE7
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='283820'),'hgnc_symbol'] = 'NOMO2'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='283820'),'hgnc_id'] = 'HGNC:22652'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='283820'),'uniprotswissprot'] = 'Q5JPE7'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='283820'),'description'] = 'NODAL modulator 2 [Source:HGNC Symbol;Acc:HGNC:22652]'
 # https://www.ncbi.nlm.nih.gov/gene/337873; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:20516; http://www.uniprot.org/uniprot/Q6DN03
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='337873'),'hgnc_symbol'] = 'HIST2H2BC'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='337873'),'hgnc_id'] = 'HGNC:20516'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='337873'),'uniprotswissprot'] = 'Q6DN03'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='337873'),'description'] = 'histone cluster 2 H2B family member c (pseudogene) [Source:HGNC Symbol;Acc:HGNC:20516]'
+# https://www.ncbi.nlm.nih.gov/gene/440563; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:48813; http://www.uniprot.org/uniprot/B2RXH8
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='440563'),'hgnc_symbol'] = 'HNRNPCL2'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='440563'),'hgnc_id'] = 'HGNC:48813'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='440563'),'uniprotswissprot'] = 'B2RXH8'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='440563'),'description'] = 'heterogeneous nuclear ribonucleoprotein C-like 2 [Source:HGNC Symbol;Acc:HGNC:48813]'
+# https://www.ncbi.nlm.nih.gov/gene/441459; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:23644; http://www.uniprot.org/uniprot/A2A2Z9
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='441459'),'hgnc_symbol'] = 'ANKRD18B'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='441459'),'hgnc_id'] = 'HGNC:23644'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='441459'),'uniprotswissprot'] = 'A2A2Z9'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='441459'),'description'] = 'ankyrin repeat domain 18B [Source:HGNC Symbol;Acc:HGNC:23644]'
 # https://www.ncbi.nlm.nih.gov/gene/653145; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:546; http://www.uniprot.org/uniprot/P13928
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='653145'),'hgnc_symbol'] = 'ANXA8'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='653145'),'hgnc_id'] = 'HGNC:546'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='653145'),'uniprotswissprot'] = 'P13928'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='653145'),'description'] = 'annexin A8 [Source:HGNC Symbol;Acc:HGNC:546]'
+# https://www.ncbi.nlm.nih.gov/gene/100996720
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='100996720'),'hgnc_symbol'] = 'LOC100996720'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='100996720'),'hgnc_id'] = ''
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='100996720'),'uniprotswissprot'] = ''
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='100996720'),'description'] = 'uncharacterized LOC100996720'
 # https://www.ncbi.nlm.nih.gov/gene/101060301; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:51333; http://www.uniprot.org/uniprot/P0DMR1
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='101060301'),'hgnc_symbol'] = 'HNRNPCL4'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='101060301'),'hgnc_id'] = 'HGNC:51333'
@@ -552,6 +667,17 @@ ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51065'),'hgnc_id'] = 'HGNC:18476'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51065'),'uniprotswissprot'] = 'Q71UM5'
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='51065'),'description'] = 'ribosomal protein S27 like [Source:HGNC Symbol;Acc:HGNC:18476]'
+
+# https://www.ncbi.nlm.nih.gov/gene/7307; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:12453; http://www.uniprot.org/uniprot/Q01081
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7307'),'hgnc_symbol'] = 'U2AF1'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7307'),'hgnc_id'] = 'HGNC:12453'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7307'),'uniprotswissprot'] = 'Q01081'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='7307'),'description'] = 'U2 small nuclear RNA auxiliary factor 1 [Source:HGNC Symbol;Acc:HGNC:12453]'
+# https://www.ncbi.nlm.nih.gov/gene/102724594; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:51830; http://www.uniprot.org/uniprot/P0DN76
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='102724594'),'hgnc_symbol'] = 'U2AF1L5'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='102724594'),'hgnc_id'] = 'HGNC:51830'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='102724594'),'uniprotswissprot'] = 'P0DN76'
+ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='102724594'),'description'] = 'U2 small nuclear RNA auxiliary factor 1 like 5 [Source:HGNC Symbol;Acc:HGNC:51830]'
 
 # https://www.ncbi.nlm.nih.gov/gene/552900; https://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:29488; http://www.uniprot.org/uniprot/Q9H3K6
 ExoCarta_Protein.hgnc_id.table[which(ExoCarta_Protein.hgnc_id.table[,'entrezgene']=='552900'),'hgnc_symbol'] = 'BOLA2'
@@ -931,6 +1057,18 @@ if(length(ExoCarta_Protein.entrezgene.NA_attributes) > 0)
 			manually_curated.hgnc_id.table[i,'entrezgene'] = '642441'
 			manually_curated.hgnc_id.table[i,'uniprotswissprot'] = ''
 			manually_curated.hgnc_id.table[i,'description'] = 'uncharacterized LOC642441'
+		} else if(ExoCarta_Protein.entrezgene.NA_attributes[i] == '101060521') {	# https://www.ncbi.nlm.nih.gov/gene/101060521
+			manually_curated.hgnc_id.table[i,'hgnc_symbol'] = 'LOC101060521'
+			manually_curated.hgnc_id.table[i,'hgnc_id'] = ''
+			manually_curated.hgnc_id.table[i,'entrezgene'] = '101060521'
+			manually_curated.hgnc_id.table[i,'uniprotswissprot'] = 'Q9NVU0'
+			manually_curated.hgnc_id.table[i,'description'] = 'DNA-directed RNA polymerase III subunit RPC5'
+		} else if(ExoCarta_Protein.entrezgene.NA_attributes[i] == '101929876') {	# https://www.ncbi.nlm.nih.gov/gene/101929876
+			manually_curated.hgnc_id.table[i,'hgnc_symbol'] = 'LOC101929876'
+			manually_curated.hgnc_id.table[i,'hgnc_id'] = ''
+			manually_curated.hgnc_id.table[i,'entrezgene'] = '101929876'
+			manually_curated.hgnc_id.table[i,'uniprotswissprot'] = 'P62854'
+			manually_curated.hgnc_id.table[i,'description'] = '40S ribosomal protein S26'
 		} else if(ExoCarta_Protein.entrezgene.NA_attributes[i] == '102724844') {	# https://www.ncbi.nlm.nih.gov/gene/102724844 -> discontinued on 9-Jun-2016: This record has been withdrawn by NCBI because the model on which it was based was not predicted in a later annotation.
 			manually_curated.hgnc_id.table[i,'hgnc_symbol'] = 'LOC102724844'
 			manually_curated.hgnc_id.table[i,'hgnc_id'] = ''

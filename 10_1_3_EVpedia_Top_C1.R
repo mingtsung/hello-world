@@ -512,6 +512,11 @@ EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q60737'),'mgi_id'] = 'MGI:88543'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q60737'),'mgi_symbol'] = 'Csnk2a1'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q60737'),'description'] = 'casein kinase 2, alpha 1 polypeptide [Source:MGI Symbol;Acc:MGI:88543]'
+# http://www.uniprot.org/uniprot/Q64281; http://www.informatics.jax.org/marker/MGI:102701; https://www.ncbi.nlm.nih.gov/gene/14728
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q64281'),'entrezgene'] = c(14728)
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q64281'),'mgi_id'] = 'MGI:102701'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q64281'),'mgi_symbol'] = 'Lilrb4a'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q64281'),'description'] = 'leukocyte immunoglobulin-like receptor, subfamily B, member 4A [Source:MGI Symbol;Acc:MGI:102701]'
 # http://www.uniprot.org/uniprot/Q6PB93; http://www.informatics.jax.org/marker/MGI:894694; https://www.ncbi.nlm.nih.gov/gene/108148
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q6PB93'),'entrezgene'] = c(108148)
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q6PB93'),'mgi_id'] = 'MGI:894694'
@@ -542,11 +547,21 @@ EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q80WG5'),'mgi_id'] = 'MGI:2652847'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q80WG5'),'mgi_symbol'] = 'Lrrc8a'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q80WG5'),'description'] = 'leucine rich repeat containing 8A [Source:MGI Symbol;Acc:MGI:2652847]'
+# http://www.uniprot.org/uniprot/Q8BGJ9; http://www.informatics.jax.org/marker/MGI:2678374; https://www.ncbi.nlm.nih.gov/gene/233073
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8BGJ9'),'entrezgene'] = c(233073)
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8BGJ9'),'mgi_id'] = 'MGI:2678374'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8BGJ9'),'mgi_symbol'] = 'U2af1l4'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8BGJ9'),'description'] = 'U2 small nuclear RNA auxiliary factor 1-like 4 [Source:MGI Symbol;Acc:MGI:2678374]'
 # http://www.uniprot.org/uniprot/Q8C854; http://www.informatics.jax.org/marker/MGI:104592; https://www.ncbi.nlm.nih.gov/gene/17876
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8C854'),'entrezgene'] = c(17876)
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8C854'),'mgi_id'] = 'MGI:104592'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8C854'),'mgi_symbol'] = 'Myef2'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8C854'),'description'] = 'myelin basic protein expression factor 2, repressor [Source:MGI Symbol;Acc:MGI:104592]'
+# http://www.uniprot.org/uniprot/Q8CE90; http://www.informatics.jax.org/marker/MGI:1346871; https://www.ncbi.nlm.nih.gov/gene/26400
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8CE90'),'entrezgene'] = c(26400)
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8CE90'),'mgi_id'] = 'MGI:1346871'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8CE90'),'mgi_symbol'] = 'Map2k7'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8CE90'),'description'] = 'mitogen-activated protein kinase kinase 7 [Source:MGI Symbol;Acc:MGI:1346871]'
 # http://www.uniprot.org/uniprot/Q8R4R6; http://www.informatics.jax.org/marker/MGI:1916732; https://www.ncbi.nlm.nih.gov/gene/69482
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8R4R6'),'entrezgene'] = c(69482)
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q8R4R6'),'mgi_id'] = 'MGI:1916732'
@@ -572,6 +587,11 @@ EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CQV1'),'mgi_id'] = 'MGI:1913699'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CQV1'),'mgi_symbol'] = 'Pam16'
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CQV1'),'description'] = 'presequence translocase-asssociated motor 16 homolog (S. cerevisiae) [Source:MGI Symbol;Acc:MGI:1913699]'
+# http://www.uniprot.org/uniprot/Q9CW46; http://www.informatics.jax.org/marker/MGI:1919016; https://www.ncbi.nlm.nih.gov/gene/71766
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CW46'),'entrezgene'] = c(71766)
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CW46'),'mgi_id'] = 'MGI:1919016'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CW46'),'mgi_symbol'] = 'Raver1'
+EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9CW46'),'description'] = 'ribonucleoprotein, PTB-binding 1 [Source:MGI Symbol;Acc:MGI:1919016]'
 # http://www.uniprot.org/uniprot/Q9D1C8; http://www.informatics.jax.org/marker/MGI:1914164; https://www.ncbi.nlm.nih.gov/gene/66914
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9D1C8'),'entrezgene'] = c(66914)
 EVpedia_Top100.Protein_Mouse.mgi_id.table[which(EVpedia_Top100.Protein_Mouse.mgi_id.table[,'uniprotswissprot']=='Q9D1C8'),'mgi_id'] = 'MGI:1914164'
@@ -767,6 +787,10 @@ for(i in 1:nrow(EVpedia_Top100.Protein_Mouse.mgi_id.table))
 			EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = c(18115)				# Nnt (http://www.informatics.jax.org/marker/MGI:109279); https://www.ncbi.nlm.nih.gov/gene/18115
 		} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:894645') {
 			EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = c(18693)				# Pick1 (http://www.informatics.jax.org/marker/MGI:894645); https://www.ncbi.nlm.nih.gov/gene/18693
+		} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:1096365') {
+			EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = c(19188)				# Psme2 (http://www.informatics.jax.org/marker/MGI:1096365); https://www.ncbi.nlm.nih.gov/gene/19188
+		} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:1919308') {
+			EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = c(72058)				# Igsf5 (http://www.informatics.jax.org/marker/MGI:1919308); https://www.ncbi.nlm.nih.gov/gene/72058
 		} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:1928344') {
 			EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = c(56433)				# Vps29 (http://www.informatics.jax.org/marker/MGI:1928344); https://www.ncbi.nlm.nih.gov/gene/56433
 		} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:3649356') {
@@ -807,6 +831,12 @@ for(i in 1:nrow(EVpedia_Top100.Protein_Mouse.mgi_id.table))
 			} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:5663201') {	# http://www.informatics.jax.org/marker/MGI:5663201
 				EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = NA
 			} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:5804914') {	# http://www.informatics.jax.org/marker/MGI:5804914
+				EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = NA
+			} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:6121499') {	# http://www.informatics.jax.org/marker/MGI:6121499
+				EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = NA
+			} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:6121530') {	# http://www.informatics.jax.org/marker/MGI:6121530
+				EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = NA
+			} else if(EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'] == 'MGI:6121629') {	# http://www.informatics.jax.org/marker/MGI:6121629
 				EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'entrezgene'] = NA
 			} else {
 				cat(paste('[Warning] Please check entrezgene of mgi_id "',EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'mgi_id'],'" of uniprotswissprot "',EVpedia_Top100.Protein_Mouse.mgi_id.table[i,'uniprotswissprot'],'". Entrezgene is NA (Not Available) by R package "biomaRt".\n',sep=""))
@@ -1157,7 +1187,7 @@ for(i in 1:ncol(EVpedia_Top100.Protein_Mouse.mgi_id.table.New))
 			column.row_duplicated_value = EVpedia_Top100.Protein_Mouse.mgi_id.table.New[column.row_duplicated_idx,colnames(EVpedia_Top100.Protein_Mouse.mgi_id.table.New)[i]]
 			#print(column.row_duplicated_value)
 			
-			removed.checked_duplicated_name = c(NA,'',
+			removed.checked_duplicated_name = c(NA,'NA','',
 												'Uncharacterized protein','Uncharacterized protein|Uncharacterized protein','Uncharacterized protein (Fragment)','Putative uncharacterized protein',
 												'Olfactory receptor',
 												'Histone H2A',
