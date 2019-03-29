@@ -2,7 +2,7 @@ rm(list=ls())	# remove all variables in workspace
 
 setwd("D:/Exo")
 
-Sample <- "C1"
+Sample <- "pcMSC_N230"
 
 mainDir <- paste('./Data/',Sample,sep="")
 subDir <- "10_datasetOverlap"
