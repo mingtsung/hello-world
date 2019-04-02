@@ -2,7 +2,7 @@ rm(list=ls())	# remove all variables in workspace
 
 setwd("D:/Exo")
 
-Sample <- "E8"
+Sample <- "C1"
 
 mainDir <- paste('./Data/',Sample,sep="")
 subDir <- "05_protein2drug"
@@ -405,7 +405,7 @@ for(r in 1:length(batch))
 							human.DrugBank.number = sapply(strsplit(drug.uniqueprotein.list.order.withDrug[,'human.DrugBank'],';'), FUN=function(X) unique(ifelse(length(unlist(X))==0, 0, length(unlist(X)))))
 							
 							drug.uniqueprotein.list.order.withDrug = cbind(drug.uniqueprotein.list.order.withDrug, mouse.DrugBank.number, human.DrugBank.number)
-							drug.uniqueprotein.list.order.withDrug = drug.uniqueprotein.list.order.withDrug[,c('mouse.Frequency','mouse.UniProt','mouse.Protein.names','mouse.DrugBank','mouse.DrugBank.number','human.UniProt','human.Protein.names','human.DrugBank','human.DrugBank.number')]
+							drug.uniqueprotein.list.order.withDrug = drug.uniqueprotein.list.order.withDrug[,c('mouse.Frequency','mouse.UniProt','mouse.Protein.names','mouse.DrugBank','mouse.DrugBank.number','human.UniProt','human.Protein.names','human.DrugBank','human.DrugBank.number'),drop=FALSE]
 							
 							if(order_name[o] == 'Frequency') {
 								drug.uniqueprotein.list.order.withDrug.reorder_idx = order(as.integer(drug.uniqueprotein.list.order.withDrug[,'mouse.Frequency']),as.integer(drug.uniqueprotein.list.order.withDrug[,'mouse.DrugBank.number']),as.integer(drug.uniqueprotein.list.order.withDrug[,'human.DrugBank.number']),decreasing=TRUE)
