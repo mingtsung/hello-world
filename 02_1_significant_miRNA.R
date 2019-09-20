@@ -51,6 +51,35 @@ diseaseStage.MSA = diseaseStage.ALL[diseaseStage.MSA.idx, , drop=FALSE]
 diseaseStage.color <- c('darkgreen','indianred','red','darkred','black')
 names(diseaseStage.color) = diseaseStage
 
+# --- Selected_miRNAs -----------------------------------------------------------------------------
+Selected_miRNAs <- read.xlsx("./Note/Interested miRNAs/Selected miRNAs between MSA vs. HC from discovery cohort and previous findings.xlsx", sheet="Selected miRNAs", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
+colnames(Selected_miRNAs) = gsub('\\.', ' ', colnames(Selected_miRNAs))
+
+Selected_miRNAs.Name = trimws(Selected_miRNAs$'Name')
+Selected_miRNAs.p_value_in_MSA_vs_HC = Selected_miRNAs$'p value in MSA vs HC'
+Selected_miRNAs.FC = Selected_miRNAs$'FC'
+Selected_miRNAs.Regulation_in_MSA = trimws(Selected_miRNAs$'Regulation in MSA')
+Selected_miRNAs.p_value_in_PD_vs_HC = Selected_miRNAs$'p value in PD vs HC'
+Selected_miRNAs.Regulation_in_PD = trimws(Selected_miRNAs$'Regulation in PD')
+Selected_miRNAs.Function = trimws(Selected_miRNAs$'Function')
+
+miR.idx1 = grep('^miR-', Selected_miRNAs.Name)
+miR.idx2 = grep('miR-', Selected_miRNAs.Name)
+if(length(miR.idx1) > 0) {
+	Selected_miRNAs.hsa_miR_Name = paste('hsa-', Selected_miRNAs.Name[miR.idx1], sep='')
+} else {
+	Selected_miRNAs.hsa_miR_Name = Selected_miRNAs.Name[miR.idx2]
+}
+piR.idx1 = grep('^piR_', Selected_miRNAs.Name)
+piR.idx2 = grep('piR_', Selected_miRNAs.Name)
+if(length(piR.idx1) > 0) {
+	Selected_miRNAs.hsa_piR_Name = paste('hsa_', Selected_miRNAs.Name[piR.idx1], sep='')
+} else {
+	Selected_miRNAs.hsa_piR_Name = Selected_miRNAs.Name[piR.idx2]
+}
+
+Selected_miRNAs.hsa_Name = c(Selected_miRNAs.hsa_miR_Name, Selected_miRNAs.hsa_piR_Name)
+
 # --- miRNA datatable -----------------------------------------------------------------------------
 miRNA.READsData <- read.xlsx("./Data/01_datatable/miRNA_datatable.xlsx", sheet="miRNA(READs)", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
 miRNA.UMIsData <- read.xlsx("./Data/01_datatable/miRNA_datatable.xlsx", sheet="miRNA(UMIs)", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
@@ -582,6 +611,12 @@ for(m in 1:ncol(combn.idx))
 	sampleStat.FC.Region = sampleStat[FC.Region.idx, , drop=FALSE]
 	sampleStat.pvalue_FC.Region = sampleStat[pvalue_FC.Region.idx, , drop=FALSE]
 	
+	Selected_miRNAs.idx = sapply(Selected_miRNAs.hsa_miR_Name, FUN=function(X) which(sampleStat[,'Name'] %in% X))
+	sampleStat.Selected_miRNAs.Region = sampleStat[Selected_miRNAs.idx, , drop=FALSE]
+	
+	pvalue_FC.Overlap.idx = which(sapply(rownames(sampleStat.Selected_miRNAs.Region), FUN=function(X) (X %in% rownames(sampleStat.pvalue_FC.Region))))
+	pvalue_FC.NonOverlap.idx = which(sapply(rownames(sampleStat.Selected_miRNAs.Region), FUN=function(X) (! X %in% rownames(sampleStat.pvalue_FC.Region))))
+	
 	# https://digibio.blogspot.com/2018/05/volcano-plot-with-ggplot2-and-basic.html
 	# https://www.bioconductor.org/packages/release/bioc/vignettes/EnhancedVolcano/inst/doc/EnhancedVolcano.html
 	# https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
@@ -603,8 +638,34 @@ for(m in 1:ncol(combn.idx))
 	
 	pic <- pic + 
 		geom_vline(xintercept = log2(FC.cutoff), col = "red", linetype = "dotted", size = 1) + 
-		geom_vline(xintercept = -log2(FC.cutoff), col = "red", linetype = "dotted", size = 1) + 
-		geom_hline(yintercept = -log10(pvalue.cutoff), col = "red", linetype = "dashed", size = 1)
+		geom_vline(xintercept = -log2(FC.cutoff), col = "red", linetype = "dotted", size = 1)
+	
+	if(pvalue.cutoff == 0.01) {
+		pic <- pic + 
+			geom_hline(yintercept = -log10(0.01), col = "red", linetype = "dotted", size = 1) + 
+			geom_hline(yintercept = -log10(0.05), col = "pink", linetype = "dashed", size = 1)
+	} else if(pvalue.cutoff == 0.05) {
+		pic <- pic + 
+			geom_hline(yintercept = -log10(0.05), col = "red", linetype = "dashed", size = 1) + 
+			geom_hline(yintercept = -log10(0.01), col = "pink", linetype = "dotted", size = 1)
+	} else {
+		if(pvalue.cutoff < 0.01) {
+			pic <- pic + 
+				geom_hline(yintercept = -log10(pvalue.cutoff), col = "red", linetype = "twodash", size = 1) + 
+				geom_hline(yintercept = -log10(0.01), col = "pink", linetype = "dotted", size = 1) + 
+				geom_hline(yintercept = -log10(0.05), col = "pink", linetype = "dashed", size = 1)
+		} else if(pvalue.cutoff > 0.05) {
+			pic <- pic + 
+				geom_hline(yintercept = -log10(pvalue.cutoff), col = "red", linetype = "longdash", size = 1) + 
+				geom_hline(yintercept = -log10(0.01), col = "pink", linetype = "dotted", size = 1) + 
+				geom_hline(yintercept = -log10(0.05), col = "pink", linetype = "dashed", size = 1)
+		} else if(pvalue.cutoff < 0.05 & pvalue.cutoff > 0.01) {
+			pic <- pic + 
+				geom_hline(yintercept = -log10(pvalue.cutoff), col = "red", linetype = "dotdash", size = 1) + 
+				geom_hline(yintercept = -log10(0.01), col = "pink", linetype = "dotted", size = 1) + 
+				geom_hline(yintercept = -log10(0.05), col = "pink", linetype = "dashed", size = 1)
+		}
+	}
 	
 	label_count = max(c(nrow(subset(sampleStat.pvalue_FC.Region, FC > FC.cutoff)), nrow(subset(sampleStat.pvalue_FC.Region, FC < -FC.cutoff))))
 	if(label_count <= 30) {								cex_num = 3
@@ -612,11 +673,13 @@ for(m in 1:ncol(combn.idx))
 	} else if(label_count > 40 & label_count <= 50) {	cex_num = 2
 	} else if(label_count > 50) {						cex_num = 1.5
 	}
+	label.idx = which(! rownames(sampleStat.pvalue_FC.Region) %in% names(pvalue_FC.Overlap.idx))
+	
 	pic <- pic + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC > 3.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC > 3.0))), 
-			nudge_x       = 6.5 - subset(sampleStat.pvalue_FC.Region, FC > 3.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 3.0))), 
+			nudge_x       = 6.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 3.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
@@ -624,9 +687,9 @@ for(m in 1:ncol(combn.idx))
 			cex           = cex_num
 		) + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC > 2.0 & FC <= 3.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC > 2.0 & FC <= 3.0))), 
-			nudge_x       = 4.5 - subset(sampleStat.pvalue_FC.Region, FC > 2.0 & FC <= 3.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0))), 
+			nudge_x       = 4.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
@@ -634,9 +697,9 @@ for(m in 1:ncol(combn.idx))
 			cex           = cex_num
 		) + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC > 1.5 & FC <= 2.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC > 1.5 & FC <= 2.0))), 
-			nudge_x       = 2.5 - subset(sampleStat.pvalue_FC.Region, FC > 1.5 & FC <= 2.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0))), 
+			nudge_x       = 2.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
@@ -644,9 +707,9 @@ for(m in 1:ncol(combn.idx))
 			cex           = cex_num
 		) + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC < -1.5 & FC >= -2.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC < -1.5 & FC >= -2.0))), 
-			nudge_x       = -2.5 - subset(sampleStat.pvalue_FC.Region, FC < -1.5 & FC >= -2.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0))), 
+			nudge_x       = -2.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
@@ -654,9 +717,9 @@ for(m in 1:ncol(combn.idx))
 			cex           = cex_num
 		) + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC < -2.0 & FC >= -3.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC < -2.0 & FC >= -3.0))), 
-			nudge_x       = -4.5 - subset(sampleStat.pvalue_FC.Region, FC < -2.0 & FC >= -3.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0))), 
+			nudge_x       = -4.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
@@ -664,13 +727,94 @@ for(m in 1:ncol(combn.idx))
 			cex           = cex_num
 		) + 
 		geom_text_repel(
-			data          = subset(sampleStat.pvalue_FC.Region, FC < -3.0), 
-			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region, FC < -3.0))), 
-			nudge_x       = -6.5 - subset(sampleStat.pvalue_FC.Region, FC < -3.0)$log2_FC, 
+			data          = subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -3.0))), 
+			nudge_x       = -6.5 - subset(sampleStat.pvalue_FC.Region[label.idx, , drop=FALSE], FC < -3.0)$log2_FC, 
 			segment.size  = 0.2, 
 			segment.color = "grey50", 
 			direction     = "y", 
 			hjust         = 1, 
+			cex           = cex_num
+		)
+	
+	pic <- pic + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 3.0))), 
+			nudge_x       = 6.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 3.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 0, 
+			cex           = cex_num
+		) + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0))), 
+			nudge_x       = 4.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 2.0 & FC <= 3.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 0, 
+			cex           = cex_num
+		) + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0))), 
+			nudge_x       = 2.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC > 1.5 & FC <= 2.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 0, 
+			cex           = cex_num
+		) + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0))), 
+			nudge_x       = -2.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -1.5 & FC >= -2.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 1, 
+			cex           = cex_num
+		) + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0))), 
+			nudge_x       = -4.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -2.0 & FC >= -3.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 1, 
+			cex           = cex_num
+		) + 
+		geom_text_repel(
+			data          = subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -3.0), 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -3.0))), 
+			nudge_x       = -6.5 - subset(sampleStat.Selected_miRNAs.Region[pvalue_FC.Overlap.idx, , drop=FALSE], FC < -3.0)$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 1, 
+			cex           = cex_num
+		)
+	
+	pic <- pic + 
+		geom_text_repel(
+			data          = sampleStat.Selected_miRNAs.Region[pvalue_FC.NonOverlap.idx, , drop=FALSE], 
+			aes(x = log2_FC, y = neg_log10_pvalue, label = rownames(sampleStat.Selected_miRNAs.Region[pvalue_FC.NonOverlap.idx, , drop=FALSE])), 
+			nudge_x       = sampleStat.Selected_miRNAs.Region[pvalue_FC.NonOverlap.idx, , drop=FALSE]$log2_FC, 
+			segment.size  = 0.2, 
+			segment.color = "red", 
+			color = "red", 
+			direction     = "y", 
+			hjust         = 0, 
 			cex           = cex_num
 		)
 	
