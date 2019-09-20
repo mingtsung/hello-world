@@ -51,6 +51,35 @@ diseaseStage.MSA = diseaseStage.ALL[diseaseStage.MSA.idx, , drop=FALSE]
 diseaseStage.color <- c('darkgreen','indianred','red','darkred','black')
 names(diseaseStage.color) = diseaseStage
 
+# --- Selected_miRNAs -----------------------------------------------------------------------------
+Selected_miRNAs <- read.xlsx("./Note/Interested miRNAs/Selected miRNAs between MSA vs. HC from discovery cohort and previous findings.xlsx", sheet="Selected miRNAs and piRNAs", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
+colnames(Selected_miRNAs) = gsub('\\.', ' ', colnames(Selected_miRNAs))
+
+Selected_miRNAs.Name = trimws(Selected_miRNAs$'Name')
+Selected_miRNAs.p_value_in_MSA_vs_HC = Selected_miRNAs$'p value in MSA vs HC'
+Selected_miRNAs.FC = Selected_miRNAs$'FC'
+Selected_miRNAs.Regulation_in_MSA = trimws(Selected_miRNAs$'Regulation in MSA')
+Selected_miRNAs.p_value_in_PD_vs_HC = Selected_miRNAs$'p value in PD vs HC'
+Selected_miRNAs.Regulation_in_PD = trimws(Selected_miRNAs$'Regulation in PD')
+Selected_miRNAs.Function = trimws(Selected_miRNAs$'Function')
+
+miR.idx1 = grep('^miR-', Selected_miRNAs.Name)
+miR.idx2 = grep('miR-', Selected_miRNAs.Name)
+if(length(miR.idx1) > 0) {
+	Selected_miRNAs.hsa_miR_Name = paste('hsa-', Selected_miRNAs.Name[miR.idx1], sep='')
+} else {
+	Selected_miRNAs.hsa_miR_Name = Selected_miRNAs.Name[miR.idx2]
+}
+piR.idx1 = grep('^piR_', Selected_miRNAs.Name)
+piR.idx2 = grep('piR_', Selected_miRNAs.Name)
+if(length(piR.idx1) > 0) {
+	Selected_miRNAs.hsa_piR_Name = paste('hsa_', Selected_miRNAs.Name[piR.idx1], sep='')
+} else {
+	Selected_miRNAs.hsa_piR_Name = Selected_miRNAs.Name[piR.idx2]
+}
+
+Selected_miRNAs.hsa_Name = c(Selected_miRNAs.hsa_miR_Name, Selected_miRNAs.hsa_piR_Name)
+
 # --- piRNA datatable -----------------------------------------------------------------------------
 piRNA.READsData <- read.xlsx("./Data/01_datatable/piRNA_datatable.xlsx", sheet="piRNA(READs)", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
 piRNA.UMIsData <- read.xlsx("./Data/01_datatable/piRNA_datatable.xlsx", sheet="piRNA(UMIs)", colNames=TRUE, rowNames=FALSE, check.names=FALSE)
