@@ -65,11 +65,12 @@
 #' @return an updated cell_data_set object
 #' @export
 learn_graph <- function(cds,
+                        reduction_method = c("UMAP", "tSNE", "PCA", "LSI", "Aligned"),
                         use_partition = TRUE,
                         close_loop = TRUE,
                         learn_graph_control = NULL,
                         verbose = FALSE) {
-  reduction_method <- "UMAP"
+  #reduction_method <- "UMAP"
   if (!is.null(learn_graph_control)) {
     assertthat::assert_that(methods::is(learn_graph_control, "list"))
     assertthat::assert_that(all(names(learn_graph_control) %in%
@@ -117,7 +118,7 @@ learn_graph <- function(cds,
                      learn_graph_control$L1.sigma)
 
   assertthat::assert_that(methods::is(cds, "cell_data_set"))
-  assertthat::assert_that(reduction_method %in% c('UMAP'), msg=paste0('unsupported or invalid reduction method \'', reduction_method, '\''))
+  assertthat::assert_that(reduction_method %in% c("UMAP", "tSNE", "PCA", "LSI", "Aligned"), msg=paste0('unsupported or invalid reduction method \'', reduction_method, '\''))
   assertthat::assert_that(is.logical(use_partition))
   assertthat::assert_that(is.logical(close_loop))
   assertthat::assert_that(is.logical(verbose))
