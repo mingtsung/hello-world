@@ -3,8 +3,8 @@
 rm(list = ls()) # remove all variables in workspace
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------
-#current_folder = "~/Project/Pancreas"
-current_folder = "/Users/mingtsung/Desktop/Project/Pancreas"
+#current_folder = "~/Project/DrugPairing"
+current_folder = "/Users/mingtsung/Desktop/Project/DrugPairing"
 setwd(current_folder)
 
 #install.packages("mgsub") # mgsub: Safe, Multiple, Simultaneous String Substitution
@@ -189,8 +189,8 @@ sgRNA.barcode <- c("1_TCGCGACACAAAAGTGTA",
                    "8_AACATGATATGCCGCGCG", 
                    "9_GCATTGCTAGCGGGCCTT", 
                    "10_ATGACATCAAGTCGCGTA", 
-                   "11_CCCAGGGAGTTATTCGAT", 
-                   "12_ATCCAAGTACCACCCCGA", 
+                   "11_CCCAGGGAGTTATTCGAT", # AB2
+                   "12_ATCCAAGTACCACCCCGA", # AB2
                    "13_TAAAATACAATCCCTCGG", # toxic sgRNA (strong toxic)
                    "14_CCACAAGAATACATGCGT", # toxic sgRNA (strong toxic)
                    "15_GTGCACACTAACAATGAG", # negative control sgRNA 1
@@ -210,7 +210,9 @@ sgRNA.barcode.full <- c("1_CACCCCTACACTCCTCCG", "2_CATGGGAAACGGTGTAAG", "3_CGTCG
                         "46_CGGACCGTCAATGGTGG", "47_AGCGTCAACCGACTTCTG", "48_CACGCTCGTGGCACCGTC", "49_CCCACACACACAGCGTGT", "50_CCTGAAGCGAGTGTGAGG", 
                         "51_TGTGTACCTCGGCGCAGA", "52_TTCCGCTATTGTCCGATG", "53_TAGAAAGCGATTATACGC", "54_ACGCGAAACCGGGCGTTA", "55_GTCACAGTAACTCGGCAT", 
                         "56_TAAGACGGCTATTGACAA", "57_ACGTGGATCATAGCACGC", "58_TTAGTAGACTGCGAACTG", "59_GCGCTACGACCGGAATCG", "60_GCCCTGCAACCTGTTTTA", 
-                        "61_CGAATGCTGAGAATAGTC", "62_CACGCGTCGGCCTATCAC", "63_CCCTCGATACGCAATTCA", "64_CCCAGGGAGTTATTCGAT", "65_ATCCAAGTACCACCCCGA", 
+                        "61_CGAATGCTGAGAATAGTC", "62_CACGCGTCGGCCTATCAC", "63_CCCTCGATACGCAATTCA", 
+                        "64_CCCAGGGAGTTATTCGAT", # AB2
+                        "65_ATCCAAGTACCACCCCGA", # AB2
                         "66_TAAAATACAATCCCTCGG", # toxic sgRNA (strong toxic)
                         "67_GATGTATCGGAGTAGTTG", # toxic sgRNA (strong toxic)
                         "68_CCACAAGAATACATGCGT", # toxic sgRNA (strong toxic)
@@ -219,13 +221,185 @@ sgRNA.barcode.full <- c("1_CACCCCTACACTCCTCCG", "2_CATGGGAAACGGTGTAAG", "3_CGTCG
                         "71_GTGCACACTAACAATGAG", # negative control sgRNA 1
                         "72_GGCTAGAATGTGTACCAT") # negative control sgRNA 2
 
-sgRNA.barcode = sgRNA.barcode
-#sgRNA.barcode = sgRNA.barcode.full
+#sgRNA.barcode = sgRNA.barcode
+sgRNA.barcode = sgRNA.barcode.full
 
 # https://www.r-bloggers.com/how-to-expand-color-palette-with-ggplot-and-rcolorbrewer/
 colourCount = length(sgRNA.barcode)
 getPalette = colorRampPalette(brewer.pal(9, "Set1"))
 sgRNA.barcode.color <- getPalette(colourCount)
+
+
+# --- sgRNA cell barcodes ---------------------------------------------------------------------------------------------------------------------------
+sample_folder = "crispr"
+filename = paste('ch02 sg cell barcodes','_','12May2021', sep = '')
+sg_cell_barcodes <- read.xlsx(paste(current_folder,'/Data','/','Mouse','/',sample_folder,'/',filename,'.xlsx', sep = ''), sheet = filename, startRow = 1, check.names = FALSE, sep.names = " ")
+
+barcode.num.table <- c()
+
+sg_cell_barcode.all <- list()
+for (i in 1:nrow(sg_cell_barcodes)) {
+    cell_barcode.idx <- which(colnames(sg_cell_barcodes) == "cell barcode")
+    sg_cell_barcode <- sg_cell_barcodes[i,c(cell_barcode.idx:ncol(sg_cell_barcodes))]
+    sg_cell_barcode <- sg_cell_barcode[which(!is.na(sg_cell_barcode))]
+    sg_cell_barcode <- as.character(sg_cell_barcode)
+    sg_cell_barcode <- trimws(sg_cell_barcode)
+    
+    barcode.num = length(sg_cell_barcode)
+    names(barcode.num) <- paste(sg_cell_barcodes[i,"X1"],'_',trimws(sg_cell_barcodes[i,"sgrna barcode"]), sep = '')
+    barcode.num.table <- c(barcode.num.table, barcode.num)
+    
+    sg_cell_barcode <- list(sg_cell_barcode)
+    names(sg_cell_barcode) = paste(sg_cell_barcodes[i,"X1"],'_',trimws(sg_cell_barcodes[i,"sgrna barcode"]), sep = '')
+    
+    sg_cell_barcode.all <- c(sg_cell_barcode.all, sg_cell_barcode)
+}
+
+cat('[','ch02','] Cell barcode number in "',filename,'.xlsx','": ',sum(barcode.num.table),'\n', sep = '')
+print(barcode.num.table)
+cat('\n')
+
+
+# --- cell_metadata ---------------------------------------------------------------------------------------------------------------------------------
+cell_metadata.all <- c()
+for (i in 1:length(sg_cell_barcode.all)) {
+    cell_metadata <- data.frame("sgRNA" = rep(names(sg_cell_barcode.all[i]), length(sg_cell_barcode.all[[i]])), 
+                                "sgRNA_id" = rep(unlist(strsplit(names(sg_cell_barcode.all[i]), '_'))[1], length(sg_cell_barcode.all[[i]])), 
+                                "sgRNA_barcode" = rep(unlist(strsplit(names(sg_cell_barcode.all[i]), '_'))[2], length(sg_cell_barcode.all[[i]])), 
+                                "cell_barcode" = sg_cell_barcode.all[[i]], 
+                                stringsAsFactors = FALSE)
+    
+    cell_metadata[,"sgRNA"] <- factor(cell_metadata[,"sgRNA"], levels = unique(cell_metadata[,"sgRNA"]))
+    cell_metadata[,"sgRNA_id"] <- factor(cell_metadata[,"sgRNA_id"], levels = unique(cell_metadata[,"sgRNA_id"]))
+    cell_metadata[,"sgRNA_barcode"] <- factor(cell_metadata[,"sgRNA_barcode"], levels = unique(cell_metadata[,"sgRNA_barcode"]))
+    
+    rownames(cell_metadata) <- cell_metadata[,"cell_barcode"]
+    
+    cell_metadata.all <- rbind(cell_metadata.all, cell_metadata)
+}
+
+
+# --- crispr ----------------------------------------------------------------------------------------------------------------------------------------
+sample_folder = "crispr"
+sample_file = "ch02_counts"
+filename = paste(sample_file,'_new', sep = '')
+sgRNA <- read.csv(paste(current_folder,'/Data','/','Mouse','/',sample_folder,'/',filename,'.csv', sep = ''), sep = ',', header = TRUE, row.names = 1, check.names = FALSE, stringsAsFactors = FALSE)
+
+total_cell_barcodes <- colnames(sgRNA)[which(! colnames(sgRNA) %in% c("ensembl","genes","gene_names"))]
+
+mainDir <- paste(current_folder,'/Result', sep = '')
+subDir <- 'Mouse'
+if (! file.exists(file.path(mainDir, subDir))) {
+    dir.create(file.path(mainDir, subDir))
+}
+
+mainDir <- paste(current_folder,'/Result','/','Mouse', sep = '')
+subDir <- sample_folder
+if (! file.exists(file.path(mainDir, subDir))) {
+    dir.create(file.path(mainDir, subDir))
+}
+
+mainDir <- paste(current_folder,'/Result','/','Mouse','/',sample_folder, sep = '')
+subDir <- "ch02"
+if (! file.exists(file.path(mainDir, subDir))) {
+    dir.create(file.path(mainDir, subDir))
+}
+
+barcode.num.new.table <- c()
+
+for (i in 1:length(sg_cell_barcode.all)) {
+    #if (length(sg_cell_barcode.all[[i]]) > 0) {
+    #    sgRNA.colidx <- sapply(sg_cell_barcode.all[[i]], FUN = function(X) which(colnames(sgRNA) %in% X))
+    #    sg_cell_barcode.idx <- which(sapply(sg_cell_barcode.all[[i]], FUN = function(X) X %in% colnames(sgRNA)))
+    #}
+    
+    sgRNA.single <- sgRNA[,c("genes","gene_names",sg_cell_barcode.all[[i]])]
+    
+    sgRNA.single[,"ensembl"] = rownames(sgRNA.single)
+    sgRNA.single <- sgRNA.single[,c("ensembl","genes","gene_names",sg_cell_barcode.all[[i]])]
+    
+    barcode.num.new = ncol(sgRNA.single) - 3
+    names(barcode.num.new) <- names(sg_cell_barcode.all[i])
+    barcode.num.new.table <- c(barcode.num.new.table, barcode.num.new)
+    
+    write.csv(sgRNA.single, file = paste(current_folder,'/Result','/','Mouse','/',sample_folder,'/','ch02','/',names(sg_cell_barcode.all[i]),'.csv', sep = ''), row.names = FALSE, quote = TRUE)
+}
+
+cat('[','ch02','] Cell barcode number in "',filename,'.csv','": ',length(total_cell_barcodes),'\n', sep = '')
+cat('[','ch02','] Sum of cell barcode number in each sgRNA cell barcode',': ',sum(barcode.num.new.table),'\n', sep = '')
+print(barcode.num.new.table)
+cat('\n')
+
+absent_cell_barcode.idx <- which(sapply(total_cell_barcodes, FUN = function(X) ! X %in% unlist(sg_cell_barcode.all)))
+absent_cell_barcode <- total_cell_barcodes[absent_cell_barcode.idx]
+
+if (length(absent_cell_barcode) > 0) {
+    if (length(absent_cell_barcode) == 1) {
+        write.table(absent_cell_barcode, file = paste(current_folder,'/Result','/','Mouse','/',sample_folder,'/','absent_cell_barcode','.txt', sep = ''), sep = '\t', row.names = FALSE, col.names = FALSE, quote = FALSE)
+    } else if (length(absent_cell_barcode) > 1) {
+        write.table(absent_cell_barcode, file = paste(current_folder,'/Result','/','Mouse','/',sample_folder,'/','absent_cell_barcodes','.txt', sep = ''), sep = '\t', row.names = FALSE, col.names = FALSE, quote = FALSE)
+    }
+}
+
+sgRNA.all <- sgRNA[,c("genes","gene_names",unlist(sg_cell_barcode.all))]
+sgRNA.all[,"ensembl"] = rownames(sgRNA.all)
+sgRNA.all <- sgRNA.all[,c("ensembl","genes","gene_names",unlist(sg_cell_barcode.all))]
+
+write.csv(sgRNA.all, file = paste(current_folder,'/Result','/','Mouse','/',sample_folder,'/',filename,'.','subset','.csv', sep = ''), row.names = FALSE, quote = TRUE)
+
+# /// rename ///
+sgRNA.all <- sgRNA.all[,which(colnames(sgRNA.all) != "ensembl")]
+
+genes.idx <- which(colnames(sgRNA.all) == "genes")
+if (length(genes.idx) == 0) {
+    genes.NA = 1
+    sgRNA.all[,"genes"] <- rownames(sgRNA.all)
+} else {
+    genes.NA = 0
+    NA.idx <- sort(unique(c(which(sgRNA.all[,"genes"] == ""), grep('Row', sgRNA.all[,"genes"], value = FALSE))))
+    sgRNA.all[NA.idx,"genes"] <- rownames(sgRNA.all)[NA.idx]
+}
+genes.idx <- which(colnames(sgRNA.all) == "genes")
+if (genes.idx != 1) {
+    col.idx <- c(genes.idx, 1:(ncol(sgRNA.all)-1))
+    sgRNA.all <- sgRNA.all[, col.idx]
+}
+genes.idx <- which(colnames(sgRNA.all) == "genes")
+
+gene_names.idx <- which(colnames(sgRNA.all) == "gene_names")
+if (length(gene_names.idx) == 0) {
+    gene_names.NA = 1
+    sgRNA.all[,"gene_names"] <- rownames(sgRNA.all)
+} else {
+    gene_names.NA = 0
+    NA.idx <- sort(unique(c(which(sgRNA.all[,"gene_names"] == ""), grep('Row', sgRNA.all[,"gene_names"], value = FALSE))))
+    sgRNA.all[NA.idx,"gene_names"] <- rownames(sgRNA.all)[NA.idx]
+}
+gene_names.idx <- which(colnames(sgRNA.all) == "gene_names")
+if (gene_names.idx != 2) {
+    col.idx <- c(1, gene_names.idx, 2:(ncol(sgRNA.all)-1))
+    sgRNA.all <- sgRNA.all[, col.idx]
+}
+gene_names.idx <- which(colnames(sgRNA.all) == "gene_names")
+
+# /// gene: replace empty gene_names with ID and append ID to duplicated gene_names ///
+gene.dup.idx <- which(duplicated(sgRNA.all[,"gene_names"]))
+if (length(gene.dup.idx) > 0) {
+    for (d in 1:length(gene.dup.idx)) {
+        gene_name <- sgRNA.all[which(sgRNA.all[,"gene_names"] == sgRNA.all[gene.dup.idx[d],"gene_names"]),"gene_names"]
+        gene_name <- unique(gene_name)
+        
+        if (length(grep(')$', sgRNA.all[which(sgRNA.all[,"gene_names"] == gene_name),"gene_names"], value = TRUE)) == 0) {
+            sgRNA.all[which(sgRNA.all[,"gene_names"] == gene_name),"gene_names"] <- paste(sgRNA.all[which(sgRNA.all[,"gene_names"] == gene_name),"gene_names"], "(", sgRNA.all[which(sgRNA.all[,"gene_names"] == gene_name),"genes"], ")", sep = '')
+        }
+    }
+}
+
+rownames(sgRNA.all) <- sgRNA.all[,"genes"]
+sgRNA.all[,"ensembl"] = rownames(sgRNA.all)
+sgRNA.all <- sgRNA.all[,c("ensembl","genes","gene_names",unlist(sg_cell_barcode.all))]
+
+write.csv(sgRNA.all, file = paste(current_folder,'/Result','/','Mouse','/',sample_folder,'/',filename,'.','subset','.','rename','.csv', sep = ''), row.names = FALSE, quote = TRUE)
 
 
 # --- Read in "gene(s) of interest" and "signature gene(s)" -----------------------------------------------------------------------------------------
@@ -365,7 +539,8 @@ if (! file.exists(file.path(mainDir, subDir))) {
 exp.name.all <- c()
 cell_metadata.all <- c()
 
-for (s in 1:length(sample)) {
+#for (s in 1:length(sample)) {
+for (s in c(1,2)) {
     
     gc() # Garbage Collection
     
@@ -391,9 +566,10 @@ for (s in 1:length(sample)) {
         sample_folder = sample[s]
         file_num = length(control)
     } else if (sample[s] == "ch02") {
-        sample_folder = "20200910 Old dataset ch02"
+        #sample_folder = "20200910 Old dataset ch02"
         #sample_folder = "20200910 Old dataset full ch02"
         #sample_folder = "20201116_ch02_counts_new"
+        sample_folder = "crispr"
         file_num = length(sgRNA.barcode)
     } else if (sample[s] == "d5_p1" | sample[s] == "d5_p2") {
         sample_folder = paste(sample[s],' reversed',' sgRNA count matrices', sep = '')
@@ -494,6 +670,8 @@ for (s in 1:length(sample)) {
                     sgRNA <- read.csv(paste('./Data','/','Mouse','/',sample_folder,'/',sample_file,'.csv', sep = ''), sep = ',', header = TRUE, row.names = 1, check.names = FALSE, stringsAsFactors = FALSE)
                 } else if (sample_folder == "20201116_ch02_counts_new") {
                     sgRNA <- read.csv(paste('./Result','/','Mouse','/',sample_folder,'/','ch02_20201116','/',sample_file,'.csv', sep = ''), sep = ',', header = TRUE, row.names = 1, check.names = FALSE, stringsAsFactors = FALSE)
+                } else if (sample_folder == "crispr") {
+                    sgRNA <- read.csv(paste('./Result','/','Mouse','/',sample_folder,'/','ch02','/',sample_file,'.csv', sep = ''), sep = ',', header = TRUE, row.names = 1, check.names = FALSE, stringsAsFactors = FALSE)
                 }
             } else {
                 sgRNA <- read.csv(paste('./Data','/','Mouse','/',sample_folder,'/',sample_file,'.csv', sep = ''), sep = ',', header = TRUE, row.names = 1, check.names = FALSE, stringsAsFactors = FALSE)
@@ -979,6 +1157,7 @@ for (s in 1:length(sample)) {
         write.csv(df.subset.all, file = paste(current_folder,'/Result','/','Mouse','/','library','/',sample[s],'/',sample[s],'.QC','.csv', sep = ''), row.names = TRUE, quote = TRUE)
     }
     
+    
     # --- gene_metadata ---------------------------------------------------------------------------------------------------------------------------------
     expression_matrix = as.matrix(df.subset.all)
     
@@ -996,7 +1175,8 @@ for (s in 1:length(sample)) {
     save.image(file = paste('./../',RData.name,'_','part2','.RData', sep = ''))
     
     
-    if (sample[s] == "control") {
+    # --- Monocle3 & Seurat -----------------------------------------------------------------------------------------------------------------------------
+    if (sample[s] == "control" | sample[s] == "ch02") {
         
         subdata <- list()
         subdata.name <- c()
@@ -1094,7 +1274,7 @@ for (s in 1:length(sample)) {
             paper.viable.idx = unlist(sapply(paper.viable, FUN = function(X) which(cell_metadata.new[,"sgRNA"] %in% X)))
             paper.cell.idx = unlist(sapply(paper.cell, FUN = function(X) which(cell_metadata.new[,"sgRNA"] %in% X)))
             
-            sgRNA.idx = which(cell_metadata.new[,"sgRNA"] %in% sgRNA.barcode)
+            sgRNA_all.idx = which(cell_metadata.new[,"sgRNA"] %in% sgRNA.barcode)
             for (b in 1:length(sgRNA.barcode)) {
                 assign(paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = ''), which(cell_metadata.new[,"sgRNA"] %in% sgRNA.barcode[b]))
             }
@@ -1110,6 +1290,7 @@ for (s in 1:length(sample)) {
                 cell_metadata.new[cancer.idx,"batch"] = 1
                 cell_metadata.new[paper.fibroblast.idx,"batch"] = 3
                 cell_metadata.new[paper.viable.idx,"batch"] = 2
+                cell_metadata.new[sgRNA_all.idx,"batch"] = 4
             } else if (all(control.old %in% control)) {
                 cell_metadata.new[acinar.idx,"batch"] = 1
                 cell_metadata.new[ductal.idx,"batch"] = 1
@@ -1121,6 +1302,7 @@ for (s in 1:length(sample)) {
                 cell_metadata.new[cancer.idx,"batch"] = 1
                 cell_metadata.new[paper.fibroblast.idx,"batch"] = 4
                 cell_metadata.new[paper.viable.idx,"batch"] = 3
+                cell_metadata.new[sgRNA_all.idx,"batch"] = 5
             } else if (all(control.new %in% control)) {
                 cell_metadata.new[acinar.idx,"batch"] = 1
                 cell_metadata.new[ductal.idx,"batch"] = 1
@@ -1132,6 +1314,7 @@ for (s in 1:length(sample)) {
                 cell_metadata.new[cancer.idx,"batch"] = 1
                 cell_metadata.new[paper.fibroblast.idx,"batch"] = 4
                 cell_metadata.new[paper.viable.idx,"batch"] = 3
+                cell_metadata.new[sgRNA_all.idx,"batch"] = 5
             }
             cell_metadata.new[,"batch"] <- factor(cell_metadata.new[,"batch"], levels = sort(unique(cell_metadata.new[,"batch"])))
             
@@ -1145,6 +1328,10 @@ for (s in 1:length(sample)) {
             cell_metadata.new[cancer.idx,"cell.type"] = "cancer"
             cell_metadata.new[paper.fibroblast.idx,"cell.type"] = "fibroblast"  # Fibroblast-enriched fraction (DAPI-CD45-CD31-EPCAM-)
             cell_metadata.new[paper.viable.idx,"cell.type"] = "viable"          # Viable cell fraction (DAPI-)
+            for (b in 1:length(sgRNA.barcode)) {
+                sgRNA_single.idx <- eval(parse(text=paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = '')))
+                cell_metadata.new[sgRNA_single.idx,"cell.type"] = paste('sgRNA','_',b, sep = '')
+            }
             cell_metadata.new[,"cell.type"] <- factor(cell_metadata.new[,"cell.type"], levels = unique(cell_metadata.new[,"cell.type"]))
             
             cell_metadata.new[acinar.idx,"cell.type.color"] = "#E77D72"
@@ -1157,6 +1344,29 @@ for (s in 1:length(sample)) {
             cell_metadata.new[cancer.idx,"cell.type.color"] = "#E46DDD"
             cell_metadata.new[paper.fibroblast.idx,"cell.type.color"] = "#53B49C"
             cell_metadata.new[paper.viable.idx,"cell.type.color"] = "#D73A35"
+            cell_metadata.new[sgRNA_all.idx,"cell.type.color"] = "#A6A6A6"
+            for (b in 1:length(sgRNA.barcode)) {
+                sgRNA_single.idx <- eval(parse(text=paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = '')))
+                if (sgRNA.barcode[b] == "39_CGGATGCTAATGCACGTG") { # toxic sgRNA
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#D8A584"
+                } else if (sgRNA.barcode[b] == "64_CCCAGGGAGTTATTCGAT") { # AB2
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#FFC000"
+                } else if (sgRNA.barcode[b] == "65_ATCCAAGTACCACCCCGA") { # AB2
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#FFFF00"
+                } else if (sgRNA.barcode[b] == "66_TAAAATACAATCCCTCGG") { # toxic sgRNA (strong toxic)
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#AF5AFF"
+                } else if (sgRNA.barcode[b] == "67_GATGTATCGGAGTAGTTG") { # toxic sgRNA (strong toxic)
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#863CBD"
+                } else if (sgRNA.barcode[b] == "68_CCACAAGAATACATGCGT") { # toxic sgRNA (strong toxic)
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#5B2A82"
+                } else if (sgRNA.barcode[b] == "69_GGAGAATCGAGATGGTGG") { # toxic sgRNA (strong toxic)
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#35184C"
+                } else if (sgRNA.barcode[b] == "71_GTGCACACTAACAATGAG") { # negative control sgRNA 1
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#54667E"
+                } else if (sgRNA.barcode[b] == "72_GGCTAGAATGTGTACCAT") { # negative control sgRNA 2
+                    cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#6D9385"
+                }
+            }
             cell_metadata.new[,"cell.type.color"] <- factor(cell_metadata.new[,"cell.type.color"], levels = unique(cell_metadata.new[,"cell.type.color"]))
             
             if (all(paper.cell %in% control)) {
@@ -1169,10 +1379,12 @@ for (s in 1:length(sample)) {
                 cell_metadata.new[PCC9.idx,"stage"] = 4
                 cell_metadata.new[pcc9.idx,"stage"] = 4
                 
-                cell_metadata.new[cancer.idx,"stage"] = 6
+                cell_metadata.new[cancer.idx,"stage"] = 7
                 
                 cell_metadata.new[paper.fibroblast.idx,"stage"] = 3
                 cell_metadata.new[paper.viable.idx,"stage"] = 5
+                
+                cell_metadata.new[sgRNA_all.idx,"stage"] = 6
             } else {
                 cell_metadata.new[acinar.idx,"stage"] = 1
                 cell_metadata.new[ductal.idx,"stage"] = 2
@@ -1183,7 +1395,9 @@ for (s in 1:length(sample)) {
                 cell_metadata.new[PCC9.idx,"stage"] = 3
                 cell_metadata.new[pcc9.idx,"stage"] = 3
                 
-                cell_metadata.new[cancer.idx,"stage"] = 4
+                cell_metadata.new[cancer.idx,"stage"] = 5
+                
+                cell_metadata.new[sgRNA_all.idx,"stage"] = 4
             }
             cell_metadata.new[,"stage"] <- factor(cell_metadata.new[,"stage"], levels = sort(unique(cell_metadata.new[,"stage"])))
             
@@ -1296,6 +1510,7 @@ for (s in 1:length(sample)) {
         }
         
         df2control <- merge(df.subset.all.new, df.subset.all.control, by = "row.names", all = TRUE, sort = TRUE)
+        #df2control <- merge(df.subset.all.control, df.subset.all.new, by = "row.names", all = TRUE, sort = TRUE)
         rownames(df2control) <- df2control$Row.names
         df2control$Row.names <- NULL
         
@@ -1393,6 +1608,310 @@ for (s in 1:length(sample)) {
                 df2control.subset <- df2control[, col.idx, drop = FALSE]
                 #assign(paste('sample','.',sample[s],'.',exp.name.all[i],'.','df2control_subset', sep = ''), df2control.subset)
                 write.csv(df2control.subset, file = paste(current_folder,'/Result','/','Mouse','/','library','/',sample[s],'/','control','/',sample[s],'.control','.',exp.name.all[i],'.csv', sep = ''), row.names = TRUE, quote = TRUE)
+            }
+        }
+        
+        
+        # --- combine control and ch02 ----------------------------------------------------------------------------------------------------------------------
+        if (sample[s] == "ch02") {
+            
+            sgRNAs_of_interest <- c(64, 65,             # AB2
+                                    39,                 # toxic sgRNA
+                                    66, 67, 68, 69,     # toxic sgRNA (strong toxic)
+                                    71, 72)             # negative control sgRNA
+            
+            exp.name.all.control_idx <- which(exp.name.all %in% control)
+            exp.name.all.control <- exp.name.all[exp.name.all.control_idx]
+            
+            exp.name.all.sgRNA_idx <- which(exp.name.all %in% sgRNA.barcode)
+            exp.name.all.sgRNA <- exp.name.all[exp.name.all.sgRNA_idx]
+            
+            exp.name.all.sgRNAs_of_interest <- sapply(sgRNAs_of_interest, FUN = function(X) exp.name.all.sgRNA[which(sapply(exp.name.all.sgRNA, FUN = function(Y) unlist(strsplit(Y, '_'))[[1]]) %in% X)])
+            
+            col.idx <- sapply(c(exp.name.all.control, exp.name.all.sgRNAs_of_interest), FUN = function(X) which(col.name %in% X))
+            col.idx <- unlist(col.idx)
+            
+            if (length(col.idx) > 0) {
+                df2control.subset <- df2control[, col.idx, drop = FALSE]
+                #assign(paste('sample','.',sample[s],'.','sgRNAs_of_interest','.','df2control_subset', sep = ''), df2control.subset)
+                write.csv(df2control.subset, file = paste(current_folder,'/Result','/','Mouse','/','library','/',sample[s],'/','control','/',sample[s],'.control','.','sgRNAs_of_interest','.csv', sep = ''), row.names = TRUE, quote = TRUE)
+            }
+            
+            # --- gene_metadata ---------------------------------------------------------------------------------------------------------------------------------
+            expression_matrix = as.matrix(df2control.subset)
+            
+            row.idx <- unlist(sapply(rownames(df2control.subset), FUN = function(X) which(all_gene_name %in% X)))
+            all_gene_id.subset.all <- all_gene_id[row.idx]
+            
+            gene_metadata <- data.frame("gene_short_name" = rownames(df2control.subset), 
+                                        "gene_id" = all_gene_id.subset.all, 
+                                        stringsAsFactors = FALSE)
+            rownames(gene_metadata) <- gene_metadata[,"gene_short_name"]
+            
+            # --- cell_metadata ---------------------------------------------------------------------------------------------------------------------------------
+            row.idx <- sapply(colnames(df2control.subset), FUN = function(X) which(rownames(cell_metadata.all) %in% X))
+            cell_metadata <- cell_metadata.all[row.idx, , drop = FALSE]
+            
+            
+            # --- Monocle3 & Seurat -----------------------------------------------------------------------------------------------------------------------------
+            subdata <- list()
+            subdata.name <- c()
+            for (comb in 1:2) {
+                if (comb == 1) {
+                    subdata.counts <- c(acinar.counts, ductal.counts, cancer_tripleMut.counts)
+                    subdata.old <- c(acinar.old, ductal.old, cancer_tripleMut.old)
+                    subdata.new <- c(acinar.new, ductal.new, cancer_tripleMut.new)
+                } else if (comb == 2) {
+                    subdata.counts <- c(ductal.counts, cancer_tripleMut.counts)
+                    subdata.old <- c(ductal.old, cancer_tripleMut.old)
+                    subdata.new <- c(ductal.new, cancer_tripleMut.new)
+                }
+                subdata <- c(subdata, list(subdata.counts))
+                #subdata <- c(subdata, list(subdata.old))
+                #subdata <- c(subdata, list(subdata.new))
+                
+                subdata.name <- c(subdata.name, paste('subset',comb, sep = ''))
+            }
+            names(subdata) = subdata.name
+            
+            #for (sb in -1:length(subdata)) {
+            for (sb in -1:-1) {
+                
+                expression_matrix.new = expression_matrix
+                gene_metadata.new = gene_metadata
+                cell_metadata.new = cell_metadata
+                
+                project.name = unlist(strsplit(current_folder, '/'))
+                project.name = project.name[length(project.name)]
+                
+                if (sb == 0) {         # all
+                    cells.input = control
+                    project.input = paste(project.name,'.','all', sep = '')
+                } else if (sb == -1) { # all_combine_paper
+                    cells.input = control
+                    project.input = paste(project.name,'.','all_combine_paper', sep = '')
+                } else if (sb > 0) {   # subset
+                    cells.input = sapply(unlist(subdata[sb]), FUN = function(X) control[which(control == X)])
+                    project.input = paste(project.name,'.',names(subdata[sb]), sep = '')
+                    
+                    col.idx <- sapply(unlist(subdata[sb]), FUN = function(X) which(cell_metadata.new[,"sgRNA"] == X))
+                    names(col.idx) = unlist(subdata[sb])
+                    col.idx <- unlist(col.idx)
+                    
+                    expression_matrix.new = expression_matrix.new[, col.idx, drop = FALSE]
+                    cell_metadata.new = cell_metadata.new[col.idx, , drop = FALSE]
+                    for (k in 1:ncol(cell_metadata.new)) {
+                        if (is.factor(cell_metadata.new[,k])) {
+                            cell_metadata.new[,k] <- factor(cell_metadata.new[,k], levels = unique(cell_metadata.new[,k]))
+                        }
+                    }
+                    
+                    Zero.idx <- which(rowSums(expression_matrix.new) == 0)
+                    if (length(Zero.idx) > 0) {
+                        row.idx <- which(rowSums(expression_matrix.new) != 0)
+                        
+                        expression_matrix.new = expression_matrix.new[row.idx, , drop = FALSE]
+                        gene_metadata.new = gene_metadata.new[row.idx, , drop = FALSE]
+                    }
+                }
+                
+                acinar.idx = which(cell_metadata.new[,"sgRNA"] %in% c("acinar","1_acinar","1_acinar_new"))
+                ductal.idx = which(cell_metadata.new[,"sgRNA"] %in% c("counts_kcppc_new","1_ductal","kcppc_bam_counts_new"))
+                cancer.idx = which(cell_metadata.new[,"sgRNA"] %in% c("cancer","1_cancer","1_cancer_new"))
+                
+                beta.idx = c()
+                min6.idx = which(cell_metadata.new[,"sgRNA"] %in% "min6")
+                if (length(min6.idx) > 0) {
+                    beta.idx = min6.idx
+                }
+                min6_1.idx = which(cell_metadata.new[,"sgRNA"] %in% c("16726_MIN6","16726_min6"))
+                min6_2.idx = which(cell_metadata.new[,"sgRNA"] %in% c("16728_MIN6","16728_min6"))
+                if (length(min6_1.idx) > 0) {
+                    beta.idx = min6_1.idx
+                }
+                if (length(min6_2.idx) > 0) {
+                    beta.idx = min6_2.idx
+                }
+                if (length(min6_1.idx) > 0 & length(min6_2.idx) > 0) {
+                    beta.idx = unique(c(min6_1.idx, min6_2.idx))
+                }
+                
+                PCC8.idx = which(cell_metadata.new[,"sgRNA"] %in% "16728_PCC8")
+                pcc8.idx = which(cell_metadata.new[,"sgRNA"] %in% c("pcc8","16728_pcc8"))
+                
+                PCC9.idx = which(cell_metadata.new[,"sgRNA"] %in% "16726_PCC9")
+                pcc9.idx = which(cell_metadata.new[,"sgRNA"] %in% c("pcc9","16726_pcc9"))
+                
+                SRR8872326.idx = which(cell_metadata.new[,"sgRNA"] %in% "SRR8872326")
+                SRR8872327.idx = which(cell_metadata.new[,"sgRNA"] %in% "SRR8872327")
+                SRR8872328.idx = which(cell_metadata.new[,"sgRNA"] %in% "SRR8872328")
+                SRR8872329.idx = which(cell_metadata.new[,"sgRNA"] %in% "SRR8872329")
+                paper.fibroblast.idx = unlist(sapply(paper.fibroblast, FUN = function(X) which(cell_metadata.new[,"sgRNA"] %in% X)))
+                paper.viable.idx = unlist(sapply(paper.viable, FUN = function(X) which(cell_metadata.new[,"sgRNA"] %in% X)))
+                paper.cell.idx = unlist(sapply(paper.cell, FUN = function(X) which(cell_metadata.new[,"sgRNA"] %in% X)))
+                
+                sgRNA_all.idx = which(cell_metadata.new[,"sgRNA"] %in% sgRNA.barcode)
+                for (b in 1:length(sgRNA.barcode)) {
+                    assign(paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = ''), which(cell_metadata.new[,"sgRNA"] %in% sgRNA.barcode[b]))
+                }
+                
+                if (all(control.counts %in% control)) {
+                    cell_metadata.new[acinar.idx,"batch"] = 1
+                    cell_metadata.new[ductal.idx,"batch"] = 1
+                    cell_metadata.new[beta.idx,"batch"] = 1
+                    cell_metadata.new[PCC8.idx,"batch"] = 1
+                    cell_metadata.new[pcc8.idx,"batch"] = 1
+                    cell_metadata.new[PCC9.idx,"batch"] = 1
+                    cell_metadata.new[pcc9.idx,"batch"] = 1
+                    cell_metadata.new[cancer.idx,"batch"] = 1
+                    cell_metadata.new[paper.fibroblast.idx,"batch"] = 3
+                    cell_metadata.new[paper.viable.idx,"batch"] = 2
+                    cell_metadata.new[sgRNA_all.idx,"batch"] = 4
+                } else if (all(control.old %in% control)) {
+                    cell_metadata.new[acinar.idx,"batch"] = 1
+                    cell_metadata.new[ductal.idx,"batch"] = 1
+                    cell_metadata.new[beta.idx,"batch"] = 2
+                    cell_metadata.new[PCC8.idx,"batch"] = 2
+                    cell_metadata.new[pcc8.idx,"batch"] = 2
+                    cell_metadata.new[PCC9.idx,"batch"] = 2
+                    cell_metadata.new[pcc9.idx,"batch"] = 2
+                    cell_metadata.new[cancer.idx,"batch"] = 1
+                    cell_metadata.new[paper.fibroblast.idx,"batch"] = 4
+                    cell_metadata.new[paper.viable.idx,"batch"] = 3
+                    cell_metadata.new[sgRNA_all.idx,"batch"] = 5
+                } else if (all(control.new %in% control)) {
+                    cell_metadata.new[acinar.idx,"batch"] = 1
+                    cell_metadata.new[ductal.idx,"batch"] = 1
+                    cell_metadata.new[beta.idx,"batch"] = 2
+                    cell_metadata.new[PCC8.idx,"batch"] = 2
+                    cell_metadata.new[pcc8.idx,"batch"] = 2
+                    cell_metadata.new[PCC9.idx,"batch"] = 2
+                    cell_metadata.new[pcc9.idx,"batch"] = 2
+                    cell_metadata.new[cancer.idx,"batch"] = 1
+                    cell_metadata.new[paper.fibroblast.idx,"batch"] = 4
+                    cell_metadata.new[paper.viable.idx,"batch"] = 3
+                    cell_metadata.new[sgRNA_all.idx,"batch"] = 5
+                }
+                cell_metadata.new[,"batch"] <- factor(cell_metadata.new[,"batch"], levels = sort(unique(cell_metadata.new[,"batch"])))
+                
+                cell_metadata.new[acinar.idx,"cell.type"] = "acinar"
+                cell_metadata.new[ductal.idx,"cell.type"] = "ductal"
+                cell_metadata.new[beta.idx,"cell.type"] = "beta"
+                cell_metadata.new[PCC8.idx,"cell.type"] = "PCC8"
+                cell_metadata.new[pcc8.idx,"cell.type"] = "pcc8"
+                cell_metadata.new[PCC9.idx,"cell.type"] = "PCC9"
+                cell_metadata.new[pcc9.idx,"cell.type"] = "pcc9"
+                cell_metadata.new[cancer.idx,"cell.type"] = "cancer"
+                cell_metadata.new[paper.fibroblast.idx,"cell.type"] = "fibroblast"  # Fibroblast-enriched fraction (DAPI-CD45-CD31-EPCAM-)
+                cell_metadata.new[paper.viable.idx,"cell.type"] = "viable"          # Viable cell fraction (DAPI-)
+                for (b in 1:length(sgRNA.barcode)) {
+                    sgRNA_single.idx <- eval(parse(text=paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = '')))
+                    cell_metadata.new[sgRNA_single.idx,"cell.type"] = paste('sgRNA','_',b, sep = '')
+                }
+                cell_metadata.new[,"cell.type"] <- factor(cell_metadata.new[,"cell.type"], levels = unique(cell_metadata.new[,"cell.type"]))
+                
+                cell_metadata.new[acinar.idx,"cell.type.color"] = "#E77D72"
+                cell_metadata.new[ductal.idx,"cell.type.color"] = "#B39F33"
+                cell_metadata.new[beta.idx,"cell.type.color"] = "#53B74C"
+                cell_metadata.new[PCC8.idx,"cell.type.color"] = "#00FDFF"
+                cell_metadata.new[pcc8.idx,"cell.type.color"] = "#00FDFF"
+                cell_metadata.new[PCC9.idx,"cell.type.color"] = "#6E9AF8"
+                cell_metadata.new[pcc9.idx,"cell.type.color"] = "#6E9AF8"
+                cell_metadata.new[cancer.idx,"cell.type.color"] = "#E46DDD"
+                cell_metadata.new[paper.fibroblast.idx,"cell.type.color"] = "#53B49C"
+                cell_metadata.new[paper.viable.idx,"cell.type.color"] = "#D73A35"
+                cell_metadata.new[sgRNA_all.idx,"cell.type.color"] = "#A6A6A6"
+                for (b in 1:length(sgRNA.barcode)) {
+                    sgRNA_single.idx <- eval(parse(text=paste('sgRNA','.',sgRNA.barcode[b],'.','idx', sep = '')))
+                    if (sgRNA.barcode[b] == "39_CGGATGCTAATGCACGTG") { # toxic sgRNA
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#D8A584"
+                    } else if (sgRNA.barcode[b] == "64_CCCAGGGAGTTATTCGAT") { # AB2
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#FFC000"
+                    } else if (sgRNA.barcode[b] == "65_ATCCAAGTACCACCCCGA") { # AB2
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#FFFF00"
+                    } else if (sgRNA.barcode[b] == "66_TAAAATACAATCCCTCGG") { # toxic sgRNA (strong toxic)
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#AF5AFF"
+                    } else if (sgRNA.barcode[b] == "67_GATGTATCGGAGTAGTTG") { # toxic sgRNA (strong toxic)
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#863CBD"
+                    } else if (sgRNA.barcode[b] == "68_CCACAAGAATACATGCGT") { # toxic sgRNA (strong toxic)
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#5B2A82"
+                    } else if (sgRNA.barcode[b] == "69_GGAGAATCGAGATGGTGG") { # toxic sgRNA (strong toxic)
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#35184C"
+                    } else if (sgRNA.barcode[b] == "71_GTGCACACTAACAATGAG") { # negative control sgRNA 1
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#54667E"
+                    } else if (sgRNA.barcode[b] == "72_GGCTAGAATGTGTACCAT") { # negative control sgRNA 2
+                        cell_metadata.new[sgRNA_single.idx,"cell.type.color"] = "#6D9385"
+                    }
+                }
+                cell_metadata.new[,"cell.type.color"] <- factor(cell_metadata.new[,"cell.type.color"], levels = unique(cell_metadata.new[,"cell.type.color"]))
+                
+                if (all(paper.cell %in% control)) {
+                    cell_metadata.new[acinar.idx,"stage"] = 1
+                    cell_metadata.new[ductal.idx,"stage"] = 2
+                    cell_metadata.new[beta.idx,"stage"] = 1
+                    
+                    cell_metadata.new[PCC8.idx,"stage"] = 4
+                    cell_metadata.new[pcc8.idx,"stage"] = 4
+                    cell_metadata.new[PCC9.idx,"stage"] = 4
+                    cell_metadata.new[pcc9.idx,"stage"] = 4
+                    
+                    cell_metadata.new[cancer.idx,"stage"] = 7
+                    
+                    cell_metadata.new[paper.fibroblast.idx,"stage"] = 3
+                    cell_metadata.new[paper.viable.idx,"stage"] = 5
+                    
+                    cell_metadata.new[sgRNA_all.idx,"stage"] = 6
+                } else {
+                    cell_metadata.new[acinar.idx,"stage"] = 1
+                    cell_metadata.new[ductal.idx,"stage"] = 2
+                    cell_metadata.new[beta.idx,"stage"] = 1
+                    
+                    cell_metadata.new[PCC8.idx,"stage"] = 3
+                    cell_metadata.new[pcc8.idx,"stage"] = 3
+                    cell_metadata.new[PCC9.idx,"stage"] = 3
+                    cell_metadata.new[pcc9.idx,"stage"] = 3
+                    
+                    cell_metadata.new[cancer.idx,"stage"] = 5
+                    
+                    cell_metadata.new[sgRNA_all.idx,"stage"] = 4
+                }
+                cell_metadata.new[,"stage"] <- factor(cell_metadata.new[,"stage"], levels = sort(unique(cell_metadata.new[,"stage"])))
+                
+                # /// Monocle3 ///
+                # *** no genes of interest and signature genes ***
+                Monocle3_analysis(expression_matrix = expression_matrix.new, 
+                                  cell_metadata = cell_metadata.new, 
+                                  gene_metadata = gene_metadata.new, 
+                                  batch = "batch", 
+                                  cell_type = "cell.type", 
+                                  time = "stage", 
+                                  cells = cells.input, 
+                                  project = project.input, 
+                                  analysis_type = "trajectories", 
+                                  redDim_method = "UMAP", 
+                                  genes_of_interest = NULL, 
+                                  signature_genes = NULL)
+                
+                # /// Seurat ///
+                min.cells = 0 # min.cells: Include features detected in at least this many cells. Will subset the counts matrix as well. To reintroduce excluded features, create a new object with a lower cutoff.
+                # To filter out low-quality cells, we first removed cells for which less than 500 genes were detected.
+                min.features = 500 # min.features: Include cells where at least this many features are detected.
+                
+                nFeature_RNA.lower_cutoff = min.features
+                nFeature_RNA.higher_cutoff = 2500
+                # To filter out low-quality cells, we removed cells for which over 10% genes derived from mitochondrial genome.
+                percent.mt.cutoff = 10
+                
+                Seurat.obj <- Seurat_analysis(expression_matrix = expression_matrix.new, 
+                                              cell_metadata = cell_metadata.new, 
+                                              gene_metadata = gene_metadata.new, 
+                                              project = project.input, 
+                                              min.cells = 0, 
+                                              min.features = 0, 
+                                              nFeature_RNA.lower_cutoff = 0, 
+                                              nFeature_RNA.higher_cutoff = nFeature_RNA.higher_cutoff, 
+                                              percent.mt.cutoff = 100 + 0.1)
+                
             }
         }
     }
@@ -1816,6 +2335,7 @@ for (m in 1:length(sample.merged)) {
         }
         
         df2control <- merge(df.subset.all.new, df.subset.all.control, by = "row.names", all = TRUE, sort = TRUE)
+        #df2control <- merge(df.subset.all.control, df.subset.all.new, by = "row.names", all = TRUE, sort = TRUE)
         rownames(df2control) <- df2control$Row.names
         df2control$Row.names <- NULL
         
@@ -2118,6 +2638,7 @@ for (b in 1:length(sgRNA.barcode)) {
             }
             
             df2control <- merge(df.subset.all.new, df.subset.all.control, by = "row.names", all = TRUE, sort = TRUE)
+            #df2control <- merge(df.subset.all.control, df.subset.all.new, by = "row.names", all = TRUE, sort = TRUE)
             rownames(df2control) <- df2control$Row.names
             df2control$Row.names <- NULL
             
