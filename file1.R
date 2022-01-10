@@ -1,4 +1,4 @@
-Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, cds = NULL, cell_subset = NULL, gene_subset = NULL, cell_choose = FALSE, batch = NULL, cell_type = NULL, time = NULL, cells = NULL, project = "Monocle3_project", analysis_type = c("clustering", "trajectories"), redDim_method = c("UMAP", "tSNE"), redDim_maxDim = 10, top_gene_num = 3, genes_of_interest = NULL, signature_genes = NULL) {
+Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, cds = NULL, cell_subset = NULL, gene_subset = NULL, cell_choose = FALSE, batch = NULL, cell_type = NULL, time = NULL, cells = NULL, project = "Monocle3_project", analysis_type = c("clustering", "trajectories"), redDim_method = c("UMAP", "tSNE"), redDim_minDim = 2, redDim_maxDim = 10, top_gene_num = 3, genes_of_interest = NULL, signature_genes = NULL) {
     
     current_folder = "."
     setwd(current_folder)
@@ -231,6 +231,19 @@ Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, c
         redDim_maxDim.input = redDim_maxDim
     }
     
+    if (! is.null(redDim_minDim)) {
+        if (! is.na(redDim_minDim)) {
+            if (redDim_minDim < redDim_maxDim.input | redDim_minDim > redDim_maxDim.input) {
+                redDim_minDim = 2
+            }
+        } else {
+            redDim_minDim = redDim_maxDim.input
+        }
+    } else {
+        redDim_minDim = redDim_maxDim.input
+    }
+    redDim_minDim.input = redDim_minDim
+    
     if (top_gene_num < 1) {
         top_gene_num = 1
     } else {
@@ -377,13 +390,19 @@ Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, c
             
             # --- max_components = maximum dimension ------------------------------------------------------------------------------------------------------------
             if (redDim_maxDim.input == 2 | redDim_maxDim.input == 3) {
-                dim.run.num = 2
+                dim.run.idx1 = 1
+                dim.run.idx2 = 2
             } else {
-                dim.run.num = 3
+                if (redDim_minDim.input == redDim_maxDim.input) {
+                    dim.run.idx1 = 3
+                    dim.run.idx2 = 3
+                } else {
+                    dim.run.idx1 = 1
+                    dim.run.idx2 = 3
+                }
             }
             
-            #for (dim.run in 3) {
-            for (dim.run in 1:dim.run.num) {
+            for (dim.run in dim.run.idx1:dim.run.idx2) {
                 
                 if (dim.run == 1) {
                     #reduce_dimension() # max_components: the dimensionality of the reduced space. Default is 2.
@@ -2939,7 +2958,11 @@ Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, c
                                     
                                     if (redDim.method[redDim] == "UMAP") {
                                         if (exists("pr_deg_ids.knn") & exists("pr_deg_names.knn")) {
-                                            differential.run = 1
+                                            if (length(pr_deg_ids.knn) > 0) {
+                                                differential.run = 1
+                                            } else {
+                                                differential.run = 0
+                                            }
                                         } else {
                                             differential.run = 0
                                         }
@@ -4252,13 +4275,19 @@ Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, c
             
             # --- max_components = maximum dimension ------------------------------------------------------------------------------------------------------------
             if (redDim_maxDim.input == 2 | redDim_maxDim.input == 3) {
-                dim.run.num = 2
+                dim.run.idx1 = 1
+                dim.run.idx2 = 2
             } else {
-                dim.run.num = 3
+                if (redDim_minDim.input == redDim_maxDim.input) {
+                    dim.run.idx1 = 3
+                    dim.run.idx2 = 3
+                } else {
+                    dim.run.idx1 = 1
+                    dim.run.idx2 = 3
+                }
             }
             
-            #for (dim.run in 3) {
-            for (dim.run in 1:dim.run.num) {
+            for (dim.run in dim.run.idx1:dim.run.idx2) {
                 
                 if (dim.run == 1) {
                     #reduce_dimension() # max_components: the dimensionality of the reduced space. Default is 2.
@@ -8119,7 +8148,11 @@ Monocle3_analysis <- function(expression_matrix, cell_metadata, gene_metadata, c
                             
                             if (redDim.method[redDim] == "UMAP") {
                                 if (exists("pr_deg_ids.principal_graph") & exists("pr_deg_names.principal_graph")) {
-                                    differential.run = 1
+                                    if (length(pr_deg_ids.principal_graph) > 0) {
+                                        differential.run = 1
+                                    } else {
+                                        differential.run = 0
+                                    }
                                 } else {
                                     differential.run = 0
                                 }
