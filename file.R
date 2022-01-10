@@ -102,6 +102,24 @@ for (i in 1) {
     if (Proj_ID[i] == "NG-27918") {
         sample.metadata <- read.xlsx(paste(current_folder,'/Data','/','LeoPharma','/','bulk_RNAseq','/','Bulk-RNAseq metadata_2Nov2021','.xlsx', sep = ''), startRow = 3, check.names = FALSE, sep.names = " ")
         
+        # +++ swap error label to correct label (2021.11.30) ++++++++++++++++++++++++++++++++++++++++++++++
+        # *** swap unstimulated and stimulated labels of T12 **********************************************
+        sample.metadata[,6] = gsub("Time 12h, unstimulated","Time 12h, treat with unstimulated",sample.metadata[,6])
+        sample.metadata[,6] = gsub("Time 12h, stimulated","Time 12h, treat with stimulated",sample.metadata[,6])
+        sample.metadata[,6] = gsub("Time 12h, treat with unstimulated","Time 12h, stimulated",sample.metadata[,6])
+        sample.metadata[,6] = gsub("Time 12h, treat with stimulated","Time 12h, unstimulated",sample.metadata[,6])
+        
+        T12.unstimulated.idx <- grep("Time 12h, unstimulated", sample.metadata[,6], value = FALSE)
+        T12.stimulated.idx <- grep("Time 12h, stimulated", sample.metadata[,6], value = FALSE)
+        
+        row.idx <- c(1:(min(T12.unstimulated.idx, T12.stimulated.idx) - 1), 
+                     T12.unstimulated.idx, 
+                     T12.stimulated.idx, 
+                     (max(T12.unstimulated.idx, T12.stimulated.idx) + 1):nrow(sample.metadata))
+        
+        sample.metadata <- sample.metadata[row.idx, , drop = FALSE]
+        # *************************************************************************************************
+        
         sample.id <- sample.metadata[,4]
         sample.name <- sample.metadata[,5]
         sample.annotation <- sample.metadata[,6]
@@ -116,6 +134,13 @@ for (i in 1) {
         sample.treatment <- sapply(sapply(sample.name, FUN = function(X) unlist(strsplit(X, '_'))[[2]]), FUN = function(Y) unlist(strsplit(Y, '-'))[[1]])
         sample.treatment[which(sample.treatment == 1)] = "unstimulated"
         sample.treatment[which(sample.treatment == 2)] = "stimulated"
+        
+        # *** swap unstimulated and stimulated labels of T12 **********************************************
+        T12_1.idx <- grep("T12_1", names(sample.treatment), value = FALSE)
+        T12_2.idx <- grep("T12_2", names(sample.treatment), value = FALSE)
+        sample.treatment[T12_2.idx] = "unstimulated"
+        sample.treatment[T12_1.idx] = "stimulated"
+        # *************************************************************************************************
         
         sample.bio_replicate <- sapply(sapply(sample.name, FUN = function(X) unlist(strsplit(X, '_'))[[2]]), FUN = function(Y) unlist(strsplit(Y, '-'))[[2]])
         sample.bio_replicate[which(sample.bio_replicate == 1)] = "Sample 1"
@@ -594,8 +619,10 @@ for (i in 1) {
     #                  cell_type = c("sample", "sample_time", "sample_treatment", "sample_time_treatment", "sample_bio_replicate"), 
     #                  time = "sample_time", 
     #                  project = project.input, 
-    #                  #analysis_type = "trajectories", 
-    #                  #redDim_method = "UMAP", 
+    #                  analysis_type = "trajectories", 
+    #                  redDim_method = "UMAP", 
+    #                  redDim_minDim = 10, 
+    #                  #redDim_maxDim = 10, 
     #                  top_gene_num = 10)
     
     
@@ -618,10 +645,71 @@ for (i in 1) {
         sampleSet2_of_interest <- list(unique(sampleSet2_of_interest))
         names(sampleSet2_of_interest) = "sampleSet2_of_interest"
         sampleSets_of_interest <- c(sampleSets_of_interest, sampleSet2_of_interest)
+        
+        # *** sampleSet3_of_interest ***
+        sub_sample.idx <- which(sample.treatment.new == "unstimulated")
+        sub_sample.idx <- sub_sample.idx[grep("-7550", names(sub_sample.idx), value = FALSE, invert = TRUE)]
+        sub_sample.idx <- c(sub_sample.idx, which(sample.time.new == "T0")) # T0 with both unstimulated and stimulated
+        rm.idx <- which(duplicated(sub_sample.idx))
+        if (length(rm.idx) > 0) sub_sample.idx <- sub_sample.idx[-rm.idx]
+        sub_sample.idx <- sort(sub_sample.idx)
+        
+        sub_sample.name.new <- sample.name.new[sub_sample.idx]
+        sampleSet3_of_interest <- sub_sample.name.new
+        
+        sampleSet3_of_interest <- list(unique(sampleSet3_of_interest))
+        names(sampleSet3_of_interest) = "unstimulated_with_bothT0"
+        sampleSets_of_interest <- c(sampleSets_of_interest, sampleSet3_of_interest)
+        
+        # *** sampleSet4_of_interest ***
+        sub_sample.idx <- which(sample.treatment.new == "unstimulated")
+        sub_sample.idx <- sub_sample.idx[grep("-7550", names(sub_sample.idx), value = FALSE, invert = TRUE)]
+        #sub_sample.idx <- c(sub_sample.idx, which(sample.time.new == "T0")) # T0 with both unstimulated and stimulated
+        rm.idx <- which(duplicated(sub_sample.idx))
+        if (length(rm.idx) > 0) sub_sample.idx <- sub_sample.idx[-rm.idx]
+        sub_sample.idx <- sort(sub_sample.idx)
+        
+        sub_sample.name.new <- sample.name.new[sub_sample.idx]
+        sampleSet4_of_interest <- sub_sample.name.new
+        
+        sampleSet4_of_interest <- list(unique(sampleSet4_of_interest))
+        names(sampleSet4_of_interest) = "unstimulated"
+        sampleSets_of_interest <- c(sampleSets_of_interest, sampleSet4_of_interest)
+        
+        # *** sampleSet5_of_interest ***
+        sub_sample.idx <- which(sample.treatment.new == "stimulated")
+        sub_sample.idx <- sub_sample.idx[grep("-7550", names(sub_sample.idx), value = FALSE, invert = TRUE)]
+        sub_sample.idx <- c(sub_sample.idx, which(sample.time.new == "T0")) # T0 with both unstimulated and stimulated
+        rm.idx <- which(duplicated(sub_sample.idx))
+        if (length(rm.idx) > 0) sub_sample.idx <- sub_sample.idx[-rm.idx]
+        sub_sample.idx <- sort(sub_sample.idx)
+        
+        sub_sample.name.new <- sample.name.new[sub_sample.idx]
+        sampleSet5_of_interest <- sub_sample.name.new
+        
+        sampleSet5_of_interest <- list(unique(sampleSet5_of_interest))
+        names(sampleSet5_of_interest) = "stimulated_with_bothT0"
+        sampleSets_of_interest <- c(sampleSets_of_interest, sampleSet5_of_interest)
+        
+        # *** sampleSet6_of_interest ***
+        sub_sample.idx <- which(sample.treatment.new == "stimulated")
+        sub_sample.idx <- sub_sample.idx[grep("-7550", names(sub_sample.idx), value = FALSE, invert = TRUE)]
+        #sub_sample.idx <- c(sub_sample.idx, which(sample.time.new == "T0")) # T0 with both unstimulated and stimulated
+        rm.idx <- which(duplicated(sub_sample.idx))
+        if (length(rm.idx) > 0) sub_sample.idx <- sub_sample.idx[-rm.idx]
+        sub_sample.idx <- sort(sub_sample.idx)
+        
+        sub_sample.name.new <- sample.name.new[sub_sample.idx]
+        sampleSet6_of_interest <- sub_sample.name.new
+        
+        sampleSet6_of_interest <- list(unique(sampleSet6_of_interest))
+        names(sampleSet6_of_interest) = "stimulated"
+        sampleSets_of_interest <- c(sampleSets_of_interest, sampleSet6_of_interest)
     }
     
     #for (sX in 1:length(sampleSets_of_interest)) {
-    for (sX in 0:length(sampleSets_of_interest)) {
+    #for (sX in 0:length(sampleSets_of_interest)) {
+    for (sX in c(1,3:6)) {
         
         if (sX == 0) {
             cell_metadata.samples <- cell_metadata.all
@@ -735,8 +823,10 @@ for (i in 1) {
                           cell_type = c("sample", "sample_time", "sample_treatment", "sample_time_treatment", "sample_bio_replicate"), 
                           time = "sample_time", 
                           project = project.input, 
-                          #analysis_type = "trajectories", 
-                          #redDim_method = "UMAP", 
+                          analysis_type = "trajectories", 
+                          redDim_method = "UMAP", 
+                          redDim_minDim = 10, 
+                          #redDim_maxDim = 10, 
                           top_gene_num = 10)
     }
     
